@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jasa Tukang Ahmad Royani</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .product { border: 1px solid #ddd; padding: 10px; margin-bottom: 15px; }
+    img { max-width: 200px; }
+    button { background: green; color: white; padding: 8px 12px; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h1>Jasa Tukang oleh Ahmad Royani</h1>
+  <p>Lokasi: Curug, Kec. Susukan Lebak, Kab. Cirebon, Jawa Barat</p>
+
+  <div class="product">
+    <h2>Tukang Harian (Umum)</h2>
+    <img src="https://via.placeholder.com/200" alt="Tukang Harian"/>
+    <p>Harga: Rp130.000/hari</p>
+    <button onclick="orderViaWA('Tukang Harian')">Pesan via WhatsApp</button>
+  </div>
+
+  <div class="product">
+    <h2>Pemasangan Keramik</h2>
+    <img src="https://via.placeholder.com/200" alt="Pasang Keramik"/>
+    <p>Harga: Rp55.000 per m²</p>
+    <button onclick="orderViaWA('Pemasangan Keramik')">Pesan via WhatsApp</button>
+  </div>
+
+  <div class="product">
+    <h2>Pemasangan Plafon Gypsum</h2>
+    <img src="https://via.placeholder.com/200" alt="Plafon Gypsum"/>
+    <p>Harga: Rp35.000 per m²</p>
+    <button onclick="orderViaWA('Pemasangan Plafon Gypsum')">Pesan via WhatsApp</button>
+  </div>
+
+  <script>
+    function orderViaWA(serviceName) {
+      const phone = '6289660171013'; // Nomor WA Ahmad Royani
+      const message = `Halo, saya ingin memesan jasa: ${serviceName}`;
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+    }
+  </script>
+
+</body>
+</html>
