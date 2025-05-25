@@ -1,1 +1,163 @@
-0
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tukang Aluminium & Kaca - Jasa Tukang Ahmad Royani</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header>
+  <h1>Jasa Tukang Aluminium & Kaca</h1>
+  <p>Jendela, pintu, partisi, etalase, dan kanopi dari bahan aluminium atau kaca</p>
+</header>
+
+<nav>
+  <a href="../index.html">Beranda</a>
+  <a href="bangunan.html">Bangunan</a>
+  <a href="kayu.html">Kayu</a>
+  <a href="atap.html">Atap</a>
+  <a href="listrik.html">Listrik</a>
+  <a href="ledeng.html">Ledeng</a>
+  <a href="cat.html">Cat</a>
+  <a href="aluminium.html">Aluminium</a>
+  <a href="las.html">Las</a>
+  <a href="ac.html">AC</a>
+  <a href="taman.html">Taman</a>
+  <a href="interior.html">Interior</a>
+  <a href="renovasi.html">Renovasi</a>
+</nav>
+
+<div class="container" id="aluminium-container"></div>
+
+<script>
+const phone = '6289660171013';
+const aluminiumServices = [
+  {
+    title: "Pemasangan Jendela Aluminium",
+    satuan: "/unit",
+    base: 250000,
+    withMakan: 270000,
+    kenekBase: 100000,
+    kenekMakan: 110000,
+    img: "../images/jendela-aluminium.png"
+  },
+  {
+    title: "Pemasangan Pintu Aluminium",
+    satuan: "/unit",
+    base: 300000,
+    withMakan: 320000,
+    kenekBase: 120000,
+    kenekMakan: 130000,
+    img: "../images/pintu-aluminium.png"
+  },
+  {
+    title: "Pemasangan Partisi Kaca / Aluminium",
+    satuan: "/m²",
+    base: 350000,
+    withMakan: 370000,
+    kenekBase: 150000,
+    kenekMakan: 160000,
+    img: "../images/partisi-kaca.png"
+  },
+  {
+    title: "Pemasangan Kanopi Kaca",
+    satuan: "/m²",
+    base: 450000,
+    withMakan: 470000,
+    kenekBase: 200000,
+    kenekMakan: 210000,
+    img: "../images/kanopi-kaca.png"
+  },
+  {
+    title: "Pemasangan Kanopi Aluminium",
+    satuan: "/m²",
+    base: 400000,
+    withMakan: 420000,
+    kenekBase: 180000,
+    kenekMakan: 190000,
+    img: "../images/kanopi-aluminium.png"
+  },
+  {
+    title: "Pemasangan Kaca Etalase / Kaca Ruko",
+    satuan: "/m²",
+    base: 380000,
+    withMakan: 400000,
+    kenekBase: 150000,
+    kenekMakan: 160000,
+    img: "../images/kaca-etalase.png"
+  },
+  {
+    title: "Pintu Sliding Aluminium / Kaca",
+    satuan: "/unit",
+    base: 320000,
+    withMakan: 340000,
+    kenekBase: 120000,
+    kenekMakan: 130000,
+    img: "../images/pintu-sliding.png"
+  }
+];
+
+const container = document.getElementById("aluminium-container");
+
+aluminiumServices.forEach((s, i) => {
+  const div = document.createElement("div");
+  div.className = "product";
+  div.innerHTML = `
+    <img src="${s.img}" alt="${s.title}">
+    <h2>${s.title}</h2>
+    <p id="harga-${i}">Rp${s.base.toLocaleString()}${s.satuan}</p>
+    <div class="kenek-options">
+      <label><input type="checkbox" id="makan-${i}"> Termasuk Uang Makan</label><br>
+      <label><input type="checkbox" id="kenek-${i}"> Tambah Kenek</label><br>
+      <label>Jumlah Kenek:</label>
+      <input type="number" id="jumlah-${i}" min="1" max="10" value="1" style="width:60px" disabled>
+      <p id="kenekHarga-${i}" style="display:none; margin: 5px 0 0;">Tarif Kenek: <span id="kenekRate-${i}">Rp${s.kenekBase.toLocaleString()}</span></p>
+    </div>
+    <button onclick="order(${i})">Pesan via WhatsApp</button>
+  `;
+  container.appendChild(div);
+
+  setTimeout(() => {
+    const makan = document.getElementById(`makan-${i}`);
+    const kenek = document.getElementById(`kenek-${i}`);
+    const jumlah = document.getElementById(`jumlah-${i}`);
+    const harga = document.getElementById(`harga-${i}`);
+    const kenekHarga = document.getElementById(`kenekHarga-${i}`);
+    const kenekRate = document.getElementById(`kenekRate-${i}`);
+
+    makan.addEventListener("change", () => {
+      harga.innerText = `Rp${(makan.checked ? s.withMakan : s.base).toLocaleString()}${s.satuan}`;
+      kenekRate.innerText = `Rp${(makan.checked ? s.kenekMakan : s.kenekBase).toLocaleString()}`;
+    });
+
+    kenek.addEventListener("change", () => {
+      jumlah.disabled = !kenek.checked;
+      kenekHarga.style.display = kenek.checked ? "block" : "none";
+    });
+  }, 0);
+});
+
+function order(id) {
+  const s = aluminiumServices[id];
+  const makan = document.getElementById(`makan-${id}`).checked;
+  const kenek = document.getElementById(`kenek-${id}`).checked;
+  const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
+  const tukangHarga = makan ? s.withMakan : s.base;
+  const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
+
+  let msg = `Halo, saya ingin memesan jasa ${s.title} dengan tarif Rp${tukangHarga.toLocaleString()}${s.satuan}`;
+  if (kenek && jumlah > 0) {
+    const total = jumlah * kenekHarga;
+    msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: Rp${total.toLocaleString()}`;
+  }
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+</script>
+
+</body>
+</html>
+
