@@ -1,1 +1,149 @@
-0
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tukang Kayu - Jasa Tukang Ahmad Royani</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <h1>Jasa Tukang Kayu</h1>
+  <p>Pekerjaan kusen, pintu, jendela, plafon kayu, dan furniture custom</p>
+</header>
+<nav>
+  <a href="../index.html">Beranda</a>
+  <a href="bangunan.html">Bangunan</a>
+  <a href="kayu.html">Kayu</a>
+  <a href="atap.html">Atap</a>
+  <a href="listrik.html">Listrik</a>
+  <a href="ledeng.html">Ledeng</a>
+  <a href="cat.html">Cat</a>
+  <a href="aluminium.html">Aluminium</a>
+  <a href="las.html">Las</a>
+  <a href="ac.html">AC</a>
+  <a href="taman.html">Taman</a>
+  <a href="interior.html">Interior</a>
+  <a href="renovasi.html">Renovasi</a>
+</nav>
+<div class="container" id="kayu-container"></div>
+<script>
+const phone = '6289660171013';
+const kayuServices = [
+  {
+    "title": "Pasang Kusen Pintu/Jendela",
+    "satuan": "/meter",
+    "base": 75000,
+    "withMakan": 80000,
+    "kenekBase": 50000,
+    "kenekMakan": 55000,
+    "img": "../images/kusen-kayu.png"
+  },
+  {
+    "title": "Pembuatan Pintu Kayu",
+    "satuan": "/unit",
+    "base": 350000,
+    "withMakan": 370000,
+    "kenekBase": 120000,
+    "kenekMakan": 130000,
+    "img": "../images/pintu-kayu.png"
+  },
+  {
+    "title": "Pembuatan Jendela Kayu",
+    "satuan": "/unit",
+    "base": 300000,
+    "withMakan": 320000,
+    "kenekBase": 100000,
+    "kenekMakan": 110000,
+    "img": "../images/jendela-kayu.png"
+  },
+  {
+    "title": "Plafon Kayu",
+    "satuan": "/m\u00b2",
+    "base": 90000,
+    "withMakan": 95000,
+    "kenekBase": 60000,
+    "kenekMakan": 65000,
+    "img": "../images/plafon-kayu.png"
+  },
+  {
+    "title": "Rangka Atap Kayu",
+    "satuan": "/m\u00b2",
+    "base": 110000,
+    "withMakan": 115000,
+    "kenekBase": 70000,
+    "kenekMakan": 75000,
+    "img": "../images/rangka-atap.png"
+  },
+  {
+    "title": "Furniture Custom",
+    "satuan": "/unit",
+    "base": 500000,
+    "withMakan": 530000,
+    "kenekBase": 150000,
+    "kenekMakan": 160000,
+    "img": "../images/furniture-kayu.png"
+  }
+];
+
+const container = document.getElementById("kayu-container");
+
+kayuServices.forEach((s, i) => {
+  const div = document.createElement("div");
+  div.className = "product";
+  div.innerHTML = `
+    <img src="${s.img}" alt="${s.title}">
+    <h2>${s.title}</h2>
+    <p id="harga-${i}">Rp${s.base.toLocaleString()}${s.satuan}</p>
+    <div class="kenek-options">
+      <label><input type="checkbox" id="makan-${i}"> Termasuk Uang Makan</label><br>
+      <label><input type="checkbox" id="kenek-${i}"> Tambah Kenek</label><br>
+      <label>Jumlah Kenek:</label>
+      <input type="number" id="jumlah-${i}" min="1" max="10" value="1" style="width:60px" disabled>
+      <p id="kenekHarga-${i}" style="display:none; margin: 5px 0 0;">Tarif Kenek: <span id="kenekRate-${i}">Rp${s.kenekBase.toLocaleString()}</span></p>
+    </div>
+    <button onclick="order(${i})">Pesan via WhatsApp</button>
+  `;
+  container.appendChild(div);
+
+  setTimeout(() => {
+    const makan = document.getElementById(`makan-${i}`);
+    const kenek = document.getElementById(`kenek-${i}`);
+    const jumlah = document.getElementById(`jumlah-${i}`);
+    const harga = document.getElementById(`harga-${i}`);
+    const kenekHarga = document.getElementById(`kenekHarga-${i}`);
+    const kenekRate = document.getElementById(`kenekRate-${i}`);
+
+    makan.addEventListener("change", () => {
+      harga.innerText = `Rp${(makan.checked ? s.withMakan : s.base).toLocaleString()}${s.satuan}`;
+      kenekRate.innerText = `Rp${(makan.checked ? s.kenekMakan : s.kenekBase).toLocaleString()}`;
+    });
+
+    kenek.addEventListener("change", () => {
+      jumlah.disabled = !kenek.checked;
+      kenekHarga.style.display = kenek.checked ? "block" : "none";
+    });
+  }, 0);
+});
+
+function order(id) {
+  const s = kayuServices[id];
+  const makan = document.getElementById(`makan-${id}`).checked;
+  const kenek = document.getElementById(`kenek-${id}`).checked;
+  const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
+  const tukangHarga = makan ? s.withMakan : s.base;
+  const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
+
+  let msg = `Halo, saya ingin memesan jasa ${s.title} dengan tarif Rp${tukangHarga.toLocaleString()}${s.satuan}`;
+  if (kenek && jumlah > 0) {
+    const total = jumlah * kenekHarga;
+    msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: Rp${total.toLocaleString()}`;
+  }
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+</script>
+</body>
+</html>
+
