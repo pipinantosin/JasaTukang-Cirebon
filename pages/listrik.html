@@ -1,1 +1,190 @@
-Stop Kontak & Lampu
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tukang Renovasi - Jasa Tukang Ahmad Royani</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      background-color: #34495e;
+      text-align: center;
+      padding: 10px;
+    }
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+    .product {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .product img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .product h2 {
+      margin-top: 15px;
+      font-size: 18px;
+    }
+    .product p {
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    .product button {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .product button:hover {
+      background-color: #219150;
+    }
+    .kenek-options {
+      margin-top: 10px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Jasa Renovasi & Bongkar Bangunan</h1>
+  <p>Renovasi total/parsial, bongkar atap/lantai/dinding</p>
+</header>
+
+<nav>
+  <a href="../index.html">Beranda</a>
+  <a href="bangunan.html">Bangunan</a>
+  <a href="kayu.html">Kayu</a>
+  <a href="atap.html">Atap</a>
+  <a href="listrik.html">Listrik</a>
+  <a href="ledeng.html">Ledeng</a>
+  <a href="cat.html">Cat</a>
+  <a href="aluminium.html">Aluminium</a>
+  <a href="las.html">Las</a>
+  <a href="ac.html">AC</a>
+  <a href="taman.html">Taman</a>
+  <a href="interior.html">Interior</a>
+  <a href="renovasi.html">Renovasi</a>
+</nav>
+
+<div class="container" id="renovasi-container"></div>
+
+<script>
+  const phone = '6289660171013';
+  const renovasiServices = [
+    {
+      title: "Renovasi Rumah",
+      satuan: "/m²",
+      base: 3500000,
+      withMakan: 3600000,
+      kenekBase: 100000,
+      kenekMakan: 110000,
+      img: "../images/renovasi-rumah.png"
+    },
+    {
+      title: "Bongkar Bangunan",
+      satuan: "/m²",
+      base: 60000,
+      withMakan: 65000,
+      kenekBase: 40000,
+      kenekMakan: 45000,
+      img: "../images/bongkar-bangunan.png"
+    }
+  ];
+
+  const container = document.getElementById("renovasi-container");
+
+  renovasiServices.forEach((s, i) => {
+    const div = document.createElement("div");
+    div.className = "product";
+    div.innerHTML = `
+      <img src="${s.img}" alt="${s.title}">
+      <h2>${s.title}</h2>
+      <p id="harga-${i}">Rp${s.base.toLocaleString()}${s.satuan}</p>
+      <div class="kenek-options">
+        <label><input type="checkbox" id="makan-${i}"> Termasuk Uang Makan</label><br>
+        <label><input type="checkbox" id="kenek-${i}"> Tambah Kenek</label><br>
+        <label>Jumlah Kenek:</label>
+        <input type="number" id="jumlah-${i}" min="1" max="10" value="1" style="width:60px" disabled>
+        <p id="kenekHarga-${i}" style="display:none; margin: 5px 0 0;">Tarif Kenek: <span id="kenekRate-${i}">Rp${s.kenekBase.toLocaleString()}</span></p>
+      </div>
+      <button onclick="order(${i})">Pesan via WhatsApp</button>
+    `;
+    container.appendChild(div);
+
+    setTimeout(() => {
+      const makan = document.getElementById(`makan-${i}`);
+      const kenek = document.getElementById(`kenek-${i}`);
+      const jumlah = document.getElementById(`jumlah-${i}`);
+      const harga = document.getElementById(`harga-${i}`);
+      const kenekHarga = document.getElementById(`kenekHarga-${i}`);
+      const kenekRate = document.getElementById(`kenekRate-${i}`);
+
+      makan.addEventListener("change", () => {
+        harga.innerText = `Rp${(makan.checked ? s.withMakan : s.base).toLocaleString()}${s.satuan}`;
+        kenekRate.innerText = `Rp${(makan.checked ? s.kenekMakan : s.kenekBase).toLocaleString()}`;
+      });
+
+      kenek.addEventListener("change", () => {
+        jumlah.disabled = !kenek.checked;
+        kenekHarga.style.display = kenek.checked ? "block" : "none";
+      });
+    }, 0);
+  });
+
+  function order(id) {
+    const s = renovasiServices[id];
+    const makan = document.getElementById(`makan-${id}`).checked;
+    const kenek = document.getElementById(`kenek-${id}`).checked;
+    const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
+    const tukangHarga = makan ? s.withMakan : s.base;
+    const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
+
+    let msg = `Halo, saya ingin memesan jasa ${s.title} dengan tarif Rp${tukangHarga.toLocaleString()}${s.satuan}`;
+    if (kenek && jumlah > 0) {
+      const total = jumlah * kenekHarga;
+      msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: Rp${total.toLocaleString()}`;
+    }
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+</script>
+
+</body>
+</html>
