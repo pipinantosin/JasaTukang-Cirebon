@@ -1,1 +1,172 @@
-0
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tukang Taman & Landscape - Jasa Tukang Ahmad Royani</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header>
+  <h1>Jasa Tukang Taman & Landscape</h1>
+  <p>Pembuatan taman, penataan tanaman, batu koral, air mancur, gazebo, dan kolam ikan</p>
+</header>
+
+<nav>
+  <a href="../index.html">Beranda</a>
+  <a href="bangunan.html">Bangunan</a>
+  <a href="kayu.html">Kayu</a>
+  <a href="atap.html">Atap</a>
+  <a href="listrik.html">Listrik</a>
+  <a href="ledeng.html">Ledeng</a>
+  <a href="cat.html">Cat</a>
+  <a href="aluminium.html">Aluminium</a>
+  <a href="las.html">Las</a>
+  <a href="ac.html">AC</a>
+  <a href="taman.html">Taman</a>
+  <a href="interior.html">Interior</a>
+  <a href="renovasi.html">Renovasi</a>
+</nav>
+
+<div class="container" id="taman-container"></div>
+
+<script>
+const phone = '6289660171013';
+const tamanServices = [
+  {
+    title: "Pembuatan Taman Minimalis",
+    satuan: "/m²",
+    base: 85000,
+    withMakan: 90000,
+    kenekBase: 50000,
+    kenekMakan: 55000,
+    img: "../images/taman-minimalis.png"
+  },
+  {
+    title: "Penataan Tanaman Hias & Pot",
+    satuan: "/paket",
+    base: 150000,
+    withMakan: 160000,
+    kenekBase: 60000,
+    kenekMakan: 65000,
+    img: "../images/tanaman-hias.png"
+  },
+  {
+    title: "Pemasangan Batu Koral / Sikat",
+    satuan: "/m²",
+    base: 70000,
+    withMakan: 75000,
+    kenekBase: 40000,
+    kenekMakan: 45000,
+    img: "../images/batu-koral.png"
+  },
+  {
+    title: "Pemasangan Rumput Taman",
+    satuan: "/m²",
+    base: 60000,
+    withMakan: 65000,
+    kenekBase: 35000,
+    kenekMakan: 40000,
+    img: "../images/rumput-taman.png"
+  },
+  {
+    title: "Pemasangan Air Mancur Mini",
+    satuan: "/unit",
+    base: 250000,
+    withMakan: 270000,
+    kenekBase: 120000,
+    kenekMakan: 130000,
+    img: "../images/air-mancur.png"
+  },
+  {
+    title: "Pembuatan Kolam Ikan",
+    satuan: "/m²",
+    base: 400000,
+    withMakan: 420000,
+    kenekBase: 180000,
+    kenekMakan: 190000,
+    img: "../images/kolam-ikan.png"
+  },
+  {
+    title: "Pembuatan Gazebo",
+    satuan: "/unit",
+    base: 1500000,
+    withMakan: 1550000,
+    kenekBase: 600000,
+    kenekMakan: 650000,
+    img: "../images/gazebo.png"
+  },
+  {
+    title: "Taman Kering Indoor / Outdoor",
+    satuan: "/m²",
+    base: 100000,
+    withMakan: 110000,
+    kenekBase: 50000,
+    kenekMakan: 55000,
+    img: "../images/taman-kering.png"
+  }
+];
+
+const container = document.getElementById("taman-container");
+
+tamanServices.forEach((s, i) => {
+  const div = document.createElement("div");
+  div.className = "product";
+  div.innerHTML = `
+    <img src="${s.img}" alt="${s.title}">
+    <h2>${s.title}</h2>
+    <p id="harga-${i}">Rp${s.base.toLocaleString()}${s.satuan}</p>
+    <div class="kenek-options">
+      <label><input type="checkbox" id="makan-${i}"> Termasuk Uang Makan</label><br>
+      <label><input type="checkbox" id="kenek-${i}"> Tambah Kenek</label><br>
+      <label>Jumlah Kenek:</label>
+      <input type="number" id="jumlah-${i}" min="1" max="10" value="1" style="width:60px" disabled>
+      <p id="kenekHarga-${i}" style="display:none; margin: 5px 0 0;">Tarif Kenek: <span id="kenekRate-${i}">Rp${s.kenekBase.toLocaleString()}</span></p>
+    </div>
+    <button onclick="order(${i})">Pesan via WhatsApp</button>
+  `;
+  container.appendChild(div);
+
+  setTimeout(() => {
+    const makan = document.getElementById(`makan-${i}`);
+    const kenek = document.getElementById(`kenek-${i}`);
+    const jumlah = document.getElementById(`jumlah-${i}`);
+    const harga = document.getElementById(`harga-${i}`);
+    const kenekHarga = document.getElementById(`kenekHarga-${i}`);
+    const kenekRate = document.getElementById(`kenekRate-${i}`);
+
+    makan.addEventListener("change", () => {
+      harga.innerText = `Rp${(makan.checked ? s.withMakan : s.base).toLocaleString()}${s.satuan}`;
+      kenekRate.innerText = `Rp${(makan.checked ? s.kenekMakan : s.kenekBase).toLocaleString()}`;
+    });
+
+    kenek.addEventListener("change", () => {
+      jumlah.disabled = !kenek.checked;
+      kenekHarga.style.display = kenek.checked ? "block" : "none";
+    });
+  }, 0);
+});
+
+function order(id) {
+  const s = tamanServices[id];
+  const makan = document.getElementById(`makan-${id}`).checked;
+  const kenek = document.getElementById(`kenek-${id}`).checked;
+  const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
+  const tukangHarga = makan ? s.withMakan : s.base;
+  const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
+
+  let msg = `Halo, saya ingin memesan jasa ${s.title} dengan tarif Rp${tukangHarga.toLocaleString()}${s.satuan}`;
+  if (kenek && jumlah > 0) {
+    const total = jumlah * kenekHarga;
+    msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: Rp${total.toLocaleString()}`;
+  }
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+</script>
+
+</body>
+</html>
+
