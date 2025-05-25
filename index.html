@@ -77,84 +77,81 @@
     <p>Pesan jasa bangunan terpercaya langsung via WhatsApp</p>
   </header>
 
-  <div class="container">
-    <div class="product">
-      <img src="images/tukang-harian.png" alt="Tukang Harian">
-      <h2>Tukang Harian (Umum)</h2>
-      <p>Rp150.000 - Rp160.000/hari</p>
-      <div class="kenek-options">
-        <label><input type="checkbox" id="includeKenek"> Tambah Kenek</label><br>
-        <label for="jumlahKenek">Jumlah Kenek:</label>
-        <input type="number" id="jumlahKenek" min="1" max="10" value="1" style="width: 60px;" disabled>
-      </div>
-      <button onclick="orderTukangWithKenek()">Pesan via WhatsApp</button>
-    </div>
+  <div class="container" id="service-container"></div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const includeKenek = document.getElementById("includeKenek");
-        const jumlahKenek = document.getElementById("jumlahKenek");
-        includeKenek.addEventListener("change", function () {
-          jumlahKenek.disabled = !this.checked;
+  <script>
+    const phone = '6289660171013';
+
+    const services = [
+      { title: "Tukang Harian (Umum)", base: 150000, withMakan: 160000, kenekBase: 110000, kenekMakan: 120000, img: "tukang-harian.png" },
+      { title: "Pemasangan Keramik", base: 55000, withMakan: 60000, kenekBase: 110000, kenekMakan: 120000, img: "pasang-keramik.png" },
+      { title: "Plafon Gypsum", base: 35000, withMakan: 40000, kenekBase: 110000, kenekMakan: 120000, img: "pasang-gypsum.png" },
+      { title: "Stop Kontak & Lampu", base: 255000, withMakan: 260000, kenekBase: 110000, kenekMakan: 120000, img: "pasang-listrik.png" },
+      { title: "Closet & Wastafel", base: 265000, withMakan: 270000, kenekBase: 110000, kenekMakan: 120000, img: "pasang-closet.png" },
+      { title: "Renovasi Rumah", base: 3500000, withMakan: 3600000, kenekBase: 110000, kenekMakan: 120000, img: "renovasi-rumah.png" },
+      { title: "Bongkar Bangunan", base: 60000, withMakan: 65000, kenekBase: 110000, kenekMakan: 120000, img: "bongkar-bangunan.png" },
+      { title: "Pasang Bata Merah", base: 95000, withMakan: 100000, kenekBase: 110000, kenekMakan: 120000, img: "pasang-batu.png" },
+      { title: "Plester & Aci Dinding", base: 68000, withMakan: 72000, kenekBase: 110000, kenekMakan: 120000, img: "aci-dinding.png" },
+      { title: "Cat Tembok", base: 30000, withMakan: 35000, kenekBase: 110000, kenekMakan: 120000, img: "cat-tembok.png" }
+    ];
+
+    const container = document.getElementById("service-container");
+
+    services.forEach((s, i) => {
+      const id = i;
+      const div = document.createElement("div");
+      div.className = "product";
+      div.innerHTML = `
+        <img src="images/${s.img}" alt="${s.title}">
+        <h2>${s.title}</h2>
+        <p id="harga-${id}">Rp${s.base.toLocaleString()}</p>
+        <div class="kenek-options">
+          <label><input type="checkbox" id="makan-${id}"> Termasuk Uang Makan</label><br>
+          <label><input type="checkbox" id="kenek-${id}"> Tambah Kenek</label><br>
+          <label>Jumlah Kenek:</label>
+          <input type="number" id="jumlah-${id}" min="1" max="10" value="1" style="width:60px" disabled>
+          <p id="kenekHarga-${id}" style="display:none; margin: 5px 0 0;">Tarif Kenek: <span id="kenekRate-${id}">Rp${s.kenekBase.toLocaleString()}</span></p>
+        </div>
+        <button onclick="order(${id})">Pesan via WhatsApp</button>
+      `;
+      container.appendChild(div);
+
+      setTimeout(() => {
+        const makan = document.getElementById(`makan-${id}`);
+        const kenek = document.getElementById(`kenek-${id}`);
+        const jumlah = document.getElementById(`jumlah-${id}`);
+        const harga = document.getElementById(`harga-${id}`);
+        const kenekHarga = document.getElementById(`kenekHarga-${id}`);
+        const kenekRate = document.getElementById(`kenekRate-${id}`);
+
+        makan.addEventListener("change", () => {
+          harga.innerText = `Rp${(makan.checked ? s.withMakan : s.base).toLocaleString()}`;
+          kenekRate.innerText = `Rp${(makan.checked ? s.kenekMakan : s.kenekBase).toLocaleString()}`;
         });
-      });
 
-      function orderTukangWithKenek() {
-        const phone = '6289660171013';
-        const includeKenek = document.getElementById("includeKenek").checked;
-        const jumlahKenek = parseInt(document.getElementById("jumlahKenek").value);
+        kenek.addEventListener("change", () => {
+          jumlah.disabled = !kenek.checked;
+          kenekHarga.style.display = kenek.checked ? "block" : "none";
+        });
+      }, 0);
+    });
 
-        let message = "Halo, saya ingin memesan jasa Tukang Harian (Umum) dengan tarif Rp150.000 - Rp160.000/hari.";
+    function order(id) {
+      const s = services[id];
+      const makan = document.getElementById(`makan-${id}`).checked;
+      const kenek = document.getElementById(`kenek-${id}`).checked;
+      const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
+      const tukangHarga = makan ? s.withMakan : s.base;
+      const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
 
-        if (includeKenek && jumlahKenek > 0) {
-          const totalKenekMin = jumlahKenek * 110000;
-          const totalKenekMax = jumlahKenek * 120000;
-          message += `\n+ Tambahan Kenek ${jumlahKenek} orang. Estimasi biaya: Rp${totalKenekMin.toLocaleString()} - Rp${totalKenekMax.toLocaleString()}`;
-        }
-
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
+      let msg = `Halo, saya ingin memesan jasa ${s.title} dengan tarif Rp${tukangHarga.toLocaleString()}`;
+      if (kenek && jumlah > 0) {
+        const total = jumlah * kenekHarga;
+        msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: Rp${total.toLocaleString()}`;
       }
-    </script>
-
-    <!-- Daftar jasa lainnya -->
-    <script>
-      const phone = '6289660171013';
-      function orderViaWA(service, price) {
-        const msg = `Halo, saya ingin memesan jasa: ${service} dengan tarif ${price}. Bisa dijelaskan lebih lanjut?`;
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-        window.open(url, '_blank');
-      }
-    </script>
-
-    <script>
-      const services = [
-        { title: "Pemasangan Keramik", price: "Rp55.000/m²", img: "pasang-keramik.png" },
-        { title: "Plafon Gypsum", price: "Rp35.000/m²", img: "pasang-gypsum.png" },
-        { title: "Stop Kontak & Lampu", price: "Rp255.000/titik", img: "pasang-listrik.png" },
-        { title: "Closet & Wastafel", price: "Rp265.000/unit", img: "pasang-closet.png" },
-        { title: "Renovasi Rumah", price: "Rp3.500.000/m²", img: "renovasi-rumah.png" },
-        { title: "Pasang Bata Merah", price: "Rp95.000/m²", img: "pasang-bata.png" },
-        { title: "Cat Tembok", price: "Rp30.000/m²", img: "cat-tembok.png" },
-        { title: "Pasang Pintu & Kusen", price: "Rp200.000/unit", img: "pasang-pintu.png" },
-        { title: "Pemasangan Genteng", price: "Rp60.000/m²", img: "pasang-genteng.png" },
-        { title: "Pembuatan Dak Beton", price: "Rp1.200.000/m²", img: "dak-beton.png" },
-      ];
-
-      const container = document.querySelector(".container");
-      services.forEach(s => {
-        const div = document.createElement("div");
-        div.className = "product";
-        div.innerHTML = `
-          <img src="images/${s.img}" alt="${s.title}">
-          <h2>${s.title}</h2>
-          <p>${s.price}</p>
-          <button onclick=\"orderViaWA('${s.title}', '${s.price}')\">Pesan via WhatsApp</button>
-        `;
-        container.appendChild(div);
-      });
-    </script>
-  </div>
-
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    }
+  </script>
 </body>
 </html>
