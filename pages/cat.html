@@ -5,86 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tukang Cat - Jasa Tukang Ahmad Royani</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    nav {
-      background-color: #34495e;
-      text-align: center;
-      padding: 10px;
-    }
-    nav a {
-      color: white;
-      margin: 0 10px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 20px auto;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 20px;
-    }
-    .product {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
-    .product img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .product h2 {
-      margin-top: 15px;
-      font-size: 18px;
-    }
-    .product p {
-      margin: 10px 0;
-      font-size: 14px;
-    }
-    .product button {
-      background-color: #27ae60;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 14px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .product button:hover {
-      background-color: #219150;
-    }
-    .kenek-options {
-      margin-top: 10px;
-      font-size: 13px;
-    }
-  </style>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
 <header>
   <h1>Jasa Tukang Cat</h1>
-  <p>Cat tembok, plafon, kusen, besi, epoxy, dan pelapis anti bocor</p>
+  <p>Pengecatan interior & eksterior, plafon, kusen, besi, epoxy, dan waterproofing</p>
 </header>
 
 <nav>
@@ -106,77 +33,130 @@
 <div class="container" id="cat-container"></div>
 
 <script>
-  const phone = '6289660171013';
-  const catServices = [
-    {
-      title: "Cat Tembok",
-      satuan: "/m²",
-      base: 30000,
-      withMakan: 35000,
-      kenekBase: 25000,
-      kenekMakan: 28000,
-      img: "../images/cat-tembok.png"
-    }
-  ];
-
-  const container = document.getElementById("cat-container");
-
-  catServices.forEach((s, i) => {
-    const div = document.createElement("div");
-    div.className = "product";
-    div.innerHTML = `
-      <img src="${s.img}" alt="${s.title}">
-      <h2>${s.title}</h2>
-      <p id="harga-${i}">Rp${s.base.toLocaleString()}${s.satuan}</p>
-      <div class="kenek-options">
-        <label><input type="checkbox" id="makan-${i}"> Termasuk Uang Makan</label><br>
-        <label><input type="checkbox" id="kenek-${i}"> Tambah Kenek</label><br>
-        <label>Jumlah Kenek:</label>
-        <input type="number" id="jumlah-${i}" min="1" max="10" value="1" style="width:60px" disabled>
-        <p id="kenekHarga-${i}" style="display:none; margin: 5px 0 0;">Tarif Kenek: <span id="kenekRate-${i}">Rp${s.kenekBase.toLocaleString()}</span></p>
-      </div>
-      <button onclick="order(${i})">Pesan via WhatsApp</button>
-    `;
-    container.appendChild(div);
-
-    setTimeout(() => {
-      const makan = document.getElementById(`makan-${i}`);
-      const kenek = document.getElementById(`kenek-${i}`);
-      const jumlah = document.getElementById(`jumlah-${i}`);
-      const harga = document.getElementById(`harga-${i}`);
-      const kenekHarga = document.getElementById(`kenekHarga-${i}`);
-      const kenekRate = document.getElementById(`kenekRate-${i}`);
-
-      makan.addEventListener("change", () => {
-        harga.innerText = `Rp${(makan.checked ? s.withMakan : s.base).toLocaleString()}${s.satuan}`;
-        kenekRate.innerText = `Rp${(makan.checked ? s.kenekMakan : s.kenekBase).toLocaleString()}`;
-      });
-
-      kenek.addEventListener("change", () => {
-        jumlah.disabled = !kenek.checked;
-        kenekHarga.style.display = kenek.checked ? "block" : "none";
-      });
-    }, 0);
-  });
-
-  function order(id) {
-    const s = catServices[id];
-    const makan = document.getElementById(`makan-${id}`).checked;
-    const kenek = document.getElementById(`kenek-${id}`).checked;
-    const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
-    const tukangHarga = makan ? s.withMakan : s.base;
-    const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
-
-    let msg = `Halo, saya ingin memesan jasa ${s.title} dengan tarif Rp${tukangHarga.toLocaleString()}${s.satuan}`;
-    if (kenek && jumlah > 0) {
-      const total = jumlah * kenekHarga;
-      msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: Rp${total.toLocaleString()}`;
-    }
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank');
+const phone = '6289660171013';
+const catServices = [
+  {
+    title: "Cat Dinding Interior",
+    satuan: "/m²",
+    base: 15000,
+    withMakan: 17000,
+    kenekBase: 10000,
+    kenekMakan: 12000,
+    img: "../images/cat-dinding-interior.png"
+  },
+  {
+    title: "Cat Dinding Eksterior",
+    satuan: "/m²",
+    base: 17000,
+    withMakan: 19000,
+    kenekBase: 11000,
+    kenekMakan: 13000,
+    img: "../images/cat-dinding-eksterior.png"
+  },
+  {
+    title: "Cat Plafon",
+    satuan: "/m²",
+    base: 16000,
+    withMakan: 18000,
+    kenekBase: 10000,
+    kenekMakan: 12000,
+    img: "../images/cat-plafon.png"
+  },
+  {
+    title: "Cat Kusen Kayu",
+    satuan: "/meter",
+    base: 20000,
+    withMakan: 22000,
+    kenekBase: 12000,
+    kenekMakan: 14000,
+    img: "../images/cat-kusen.png"
+  },
+  {
+    title: "Cat Besi (Pagar / Teralis)",
+    satuan: "/meter",
+    base: 25000,
+    withMakan: 27000,
+    kenekBase: 15000,
+    kenekMakan: 17000,
+    img: "../images/cat-besi.png"
+  },
+  {
+    title: "Epoxy Lantai",
+    satuan: "/m²",
+    base: 40000,
+    withMakan: 42000,
+    kenekBase: 25000,
+    kenekMakan: 27000,
+    img: "../images/epoxy.png"
+  },
+  {
+    title: "Pelapis Anti Bocor",
+    satuan: "/m²",
+    base: 35000,
+    withMakan: 37000,
+    kenekBase: 20000,
+    kenekMakan: 22000,
+    img: "../images/waterproof.png"
   }
+];
+
+const container = document.getElementById("cat-container");
+
+catServices.forEach((s, i) => {
+  const div = document.createElement("div");
+  div.className = "product";
+  div.innerHTML = `
+    <img src="${s.img}" alt="${s.title}">
+    <h2>${s.title}</h2>
+    <p id="harga-${i}">Rp${s.base.toLocaleString()}${s.satuan}</p>
+    <div class="kenek-options">
+      <label><input type="checkbox" id="makan-${i}"> Termasuk Uang Makan</label><br>
+      <label><input type="checkbox" id="kenek-${i}"> Tambah Kenek</label><br>
+      <label>Jumlah Kenek:</label>
+      <input type="number" id="jumlah-${i}" min="1" max="10" value="1" style="width:60px" disabled>
+      <p id="kenekHarga-${i}" style="display:none; margin: 5px 0 0;">Tarif Kenek: <span id="kenekRate-${i}">Rp${s.kenekBase.toLocaleString()}</span></p>
+    </div>
+    <button onclick="order(${i})">Pesan via WhatsApp</button>
+  `;
+  container.appendChild(div);
+
+  setTimeout(() => {
+    const makan = document.getElementById(`makan-${i}`);
+    const kenek = document.getElementById(`kenek-${i}`);
+    const jumlah = document.getElementById(`jumlah-${i}`);
+    const harga = document.getElementById(`harga-${i}`);
+    const kenekHarga = document.getElementById(`kenekHarga-${i}`);
+    const kenekRate = document.getElementById(`kenekRate-${i}`);
+
+    makan.addEventListener("change", () => {
+      harga.innerText = `Rp${(makan.checked ? s.withMakan : s.base).toLocaleString()}${s.satuan}`;
+      kenekRate.innerText = `Rp${(makan.checked ? s.kenekMakan : s.kenekBase).toLocaleString()}`;
+    });
+
+    kenek.addEventListener("change", () => {
+      jumlah.disabled = !kenek.checked;
+      kenekHarga.style.display = kenek.checked ? "block" : "none";
+    });
+  }, 0);
+});
+
+function order(id) {
+  const s = catServices[id];
+  const makan = document.getElementById(`makan-${id}`).checked;
+  const kenek = document.getElementById(`kenek-${id}`).checked;
+  const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
+  const tukangHarga = makan ? s.withMakan : s.base;
+  const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
+
+  let msg = `Halo, saya ingin memesan jasa ${s.title} dengan tarif Rp${tukangHarga.toLocaleString()}${s.satuan}`;
+  if (kenek && jumlah > 0) {
+    const total = jumlah * kenekHarga;
+    msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: Rp${total.toLocaleString()}`;
+  }
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
 </script>
 
 </body>
 </html>
-
