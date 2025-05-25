@@ -68,6 +68,48 @@
       font-size: 13px;
     }
   </style>
+
+  <style>
+    .calc-table {
+      width: 100%;
+      background-color: white;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .calc-table th, .calc-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .calc-table th {
+      background-color: #2c3e50;
+      color: white;
+    }
+    .calc-total {
+      font-weight: bold;
+      font-size: 18px;
+      margin: 20px 0 10px;
+      text-align: right;
+    }
+    .calc-table input[type="number"] {
+      width: 60px;
+    }
+    .wa-button {
+      display: inline-block;
+      background-color: #27ae60;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      float: right;
+      margin-top: 10px;
+    }
+    .wa-button:hover {
+      background-color: #219150;
+    }
+  </style>
+
 </head>
 <body>
 
@@ -78,6 +120,27 @@
   </header>
 
   <div class="container" id="service-container"></div>
+
+  <section style="padding: 20px;">
+    <h2 style="text-align:center; color:#2c3e50;">Kalkulator Biaya Kusen</h2>
+    <table class="calc-table">
+      <thead>
+        <tr>
+          <th>Pilih</th>
+          <th>Material</th>
+          <th>Harga Satuan (Rp)</th>
+          <th>Jumlah</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="material-body"></tbody>
+    </table>
+    <div class="calc-total" id="total-estimasi">
+      Estimasi Total: Rp0
+    </div>
+    <a href="#" class="wa-button" id="kirim-wa" target="_blank">Kirim via WhatsApp</a>
+  </section>
+
 
   <script>
     const phone = '6289660171013';
@@ -153,5 +216,72 @@
       window.open(url, '_blank');
     }
   </script>
+
+  <script>
+    const phoneNumber = "6289660171013"; // Nomor WhatsApp tujuan
+
+    const materials = [
+      { nama: "Kusen Kayu Kamper", harga: 75000 },
+      { nama: "Sekrup (paket)", harga: 15000 },
+      { nama: "Engsel", harga: 10000 },
+      { nama: "Kaca Polos 5mm", harga: 60000 },
+      { nama: "Cat Kayu", harga: 45000 },
+      { nama: "Biaya Jasa Pemasangan", harga: 120000 }
+    ];
+
+    const tbody = document.getElementById("material-body");
+    const totalDisplay = document.getElementById("total-estimasi");
+    const waButton = document.getElementById("kirim-wa");
+
+    materials.forEach((item, index) => {
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td><input type="checkbox" id="check-${index}"></td>
+        <td>${item.nama}</td>
+        <td>Rp${item.harga.toLocaleString()}</td>
+        <td><input type="number" id="qty-${index}" value="1" min="1" disabled></td>
+        <td id="subtotal-${index}">Rp0</td>
+      `;
+
+      tbody.appendChild(row);
+
+      const checkbox = row.querySelector(`#check-${index}`);
+      const qtyInput = row.querySelector(`#qty-${index}`);
+
+      checkbox.addEventListener("change", () => {
+        qtyInput.disabled = !checkbox.checked;
+        hitungTotal();
+      });
+
+      qtyInput.addEventListener("input", hitungTotal);
+    });
+
+    function hitungTotal() {
+      let total = 0;
+      let pesan = `Saya ingin estimasi biaya kusen:\n`;
+
+      materials.forEach((item, index) => {
+        const checked = document.getElementById(`check-${index}`).checked;
+        const qty = parseInt(document.getElementById(`qty-${index}`).value) || 0;
+        const subtotalCell = document.getElementById(`subtotal-${index}`);
+
+        if (checked) {
+          const subtotal = item.harga * qty;
+          subtotalCell.innerText = `Rp${subtotal.toLocaleString()}`;
+          total += subtotal;
+          pesan += `- ${item.nama} x${qty} = Rp${subtotal.toLocaleString()}\n`;
+        } else {
+          subtotalCell.innerText = `Rp0`;
+        }
+      });
+
+      totalDisplay.innerText = `Estimasi Total: Rp${total.toLocaleString()}`;
+      pesan += `Total Estimasi: Rp${total.toLocaleString()}`;
+      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(pesan)}`;
+      waButton.href = url;
+    }
+  </script>
+
 </body>
 </html>
