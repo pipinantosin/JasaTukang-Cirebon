@@ -5,86 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tukang Interior - Jasa Tukang Ahmad Royani</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    nav {
-      background-color: #34495e;
-      text-align: center;
-      padding: 10px;
-    }
-    nav a {
-      color: white;
-      margin: 0 10px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 20px auto;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 20px;
-    }
-    .product {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
-    .product img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .product h2 {
-      margin-top: 15px;
-      font-size: 18px;
-    }
-    .product p {
-      margin: 10px 0;
-      font-size: 14px;
-    }
-    .product button {
-      background-color: #27ae60;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 14px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .product button:hover {
-      background-color: #219150;
-    }
-    .kenek-options {
-      margin-top: 10px;
-      font-size: 13px;
-    }
-  </style>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
 <header>
   <h1>Jasa Tukang Interior</h1>
-  <p>Pemasangan plafon gypsum, partisi, wallpaper, lantai vinyl dan parket</p>
+  <p>Partisi gypsum, plafon, wallpaper, vinil, parket, lis, dan pengecatan interior khusus</p>
 </header>
 
 <nav>
@@ -106,77 +33,130 @@
 <div class="container" id="interior-container"></div>
 
 <script>
-  const phone = '6289660171013';
-  const interiorServices = [
-    {
-      title: "Plafon Gypsum",
-      satuan: "/m²",
-      base: 35000,
-      withMakan: 40000,
-      kenekBase: 30000,
-      kenekMakan: 35000,
-      img: "../images/pasang-gypsum.png"
-    }
-  ];
-
-  const container = document.getElementById("interior-container");
-
-  interiorServices.forEach((s, i) => {
-    const div = document.createElement("div");
-    div.className = "product";
-    div.innerHTML = `
-      <img src="${s.img}" alt="${s.title}">
-      <h2>${s.title}</h2>
-      <p id="harga-${i}">Rp${s.base.toLocaleString()}${s.satuan}</p>
-      <div class="kenek-options">
-        <label><input type="checkbox" id="makan-${i}"> Termasuk Uang Makan</label><br>
-        <label><input type="checkbox" id="kenek-${i}"> Tambah Kenek</label><br>
-        <label>Jumlah Kenek:</label>
-        <input type="number" id="jumlah-${i}" min="1" max="10" value="1" style="width:60px" disabled>
-        <p id="kenekHarga-${i}" style="display:none; margin: 5px 0 0;">Tarif Kenek: <span id="kenekRate-${i}">Rp${s.kenekBase.toLocaleString()}</span></p>
-      </div>
-      <button onclick="order(${i})">Pesan via WhatsApp</button>
-    `;
-    container.appendChild(div);
-
-    setTimeout(() => {
-      const makan = document.getElementById(`makan-${i}`);
-      const kenek = document.getElementById(`kenek-${i}`);
-      const jumlah = document.getElementById(`jumlah-${i}`);
-      const harga = document.getElementById(`harga-${i}`);
-      const kenekHarga = document.getElementById(`kenekHarga-${i}`);
-      const kenekRate = document.getElementById(`kenekRate-${i}`);
-
-      makan.addEventListener("change", () => {
-        harga.innerText = `Rp${(makan.checked ? s.withMakan : s.base).toLocaleString()}${s.satuan}`;
-        kenekRate.innerText = `Rp${(makan.checked ? s.kenekMakan : s.kenekBase).toLocaleString()}`;
-      });
-
-      kenek.addEventListener("change", () => {
-        jumlah.disabled = !kenek.checked;
-        kenekHarga.style.display = kenek.checked ? "block" : "none";
-      });
-    }, 0);
-  });
-
-  function order(id) {
-    const s = interiorServices[id];
-    const makan = document.getElementById(`makan-${id}`).checked;
-    const kenek = document.getElementById(`kenek-${id}`).checked;
-    const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
-    const tukangHarga = makan ? s.withMakan : s.base;
-    const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
-
-    let msg = `Halo, saya ingin memesan jasa ${s.title} dengan tarif Rp${tukangHarga.toLocaleString()}${s.satuan}`;
-    if (kenek && jumlah > 0) {
-      const total = jumlah * kenekHarga;
-      msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: Rp${total.toLocaleString()}`;
-    }
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank');
+const phone = '6289660171013';
+const interiorServices = [
+  {
+    title: "Pemasangan Partisi Gypsum",
+    satuan: "/m²",
+    base: 80000,
+    withMakan: 85000,
+    kenekBase: 50000,
+    kenekMakan: 55000,
+    img: "../images/partisi-gypsum.png"
+  },
+  {
+    title: "Pemasangan Plafon Gypsum",
+    satuan: "/m²",
+    base: 75000,
+    withMakan: 80000,
+    kenekBase: 45000,
+    kenekMakan: 50000,
+    img: "../images/plafon-gypsum.png"
+  },
+  {
+    title: "Pemasangan Wallpaper Dinding",
+    satuan: "/m²",
+    base: 35000,
+    withMakan: 37000,
+    kenekBase: 20000,
+    kenekMakan: 22000,
+    img: "../images/wallpaper.png"
+  },
+  {
+    title: "Pemasangan Lantai Vinyl",
+    satuan: "/m²",
+    base: 60000,
+    withMakan: 65000,
+    kenekBase: 30000,
+    kenekMakan: 35000,
+    img: "../images/vinyl.png"
+  },
+  {
+    title: "Pemasangan Parket / Laminated",
+    satuan: "/m²",
+    base: 70000,
+    withMakan: 75000,
+    kenekBase: 35000,
+    kenekMakan: 40000,
+    img: "../images/parket.png"
+  },
+  {
+    title: "Pemasangan Lis Dinding / Plafon",
+    satuan: "/meter",
+    base: 25000,
+    withMakan: 27000,
+    kenekBase: 15000,
+    kenekMakan: 17000,
+    img: "../images/lis-plafon.png"
+  },
+  {
+    title: "Cat Interior Dekoratif",
+    satuan: "/m²",
+    base: 40000,
+    withMakan: 42000,
+    kenekBase: 20000,
+    kenekMakan: 22000,
+    img: "../images/cat-dekoratif.png"
   }
+];
+
+const container = document.getElementById("interior-container");
+
+interiorServices.forEach((s, i) => {
+  const div = document.createElement("div");
+  div.className = "product";
+  div.innerHTML = `
+    <img src="${s.img}" alt="${s.title}">
+    <h2>${s.title}</h2>
+    <p id="harga-${i}">Rp${s.base.toLocaleString()}${s.satuan}</p>
+    <div class="kenek-options">
+      <label><input type="checkbox" id="makan-${i}"> Termasuk Uang Makan</label><br>
+      <label><input type="checkbox" id="kenek-${i}"> Tambah Kenek</label><br>
+      <label>Jumlah Kenek:</label>
+      <input type="number" id="jumlah-${i}" min="1" max="10" value="1" style="width:60px" disabled>
+      <p id="kenekHarga-${i}" style="display:none; margin: 5px 0 0;">Tarif Kenek: <span id="kenekRate-${i}">Rp${s.kenekBase.toLocaleString()}</span></p>
+    </div>
+    <button onclick="order(${i})">Pesan via WhatsApp</button>
+  `;
+  container.appendChild(div);
+
+  setTimeout(() => {
+    const makan = document.getElementById(`makan-${i}`);
+    const kenek = document.getElementById(`kenek-${i}`);
+    const jumlah = document.getElementById(`jumlah-${i}`);
+    const harga = document.getElementById(`harga-${i}`);
+    const kenekHarga = document.getElementById(`kenekHarga-${i}`);
+    const kenekRate = document.getElementById(`kenekRate-${i}`);
+
+    makan.addEventListener("change", () => {
+      harga.innerText = `Rp${(makan.checked ? s.withMakan : s.base).toLocaleString()}${s.satuan}`;
+      kenekRate.innerText = `Rp${(makan.checked ? s.kenekMakan : s.kenekBase).toLocaleString()}`;
+    });
+
+    kenek.addEventListener("change", () => {
+      jumlah.disabled = !kenek.checked;
+      kenekHarga.style.display = kenek.checked ? "block" : "none";
+    });
+  }, 0);
+});
+
+function order(id) {
+  const s = interiorServices[id];
+  const makan = document.getElementById(`makan-${id}`).checked;
+  const kenek = document.getElementById(`kenek-${id}`).checked;
+  const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
+  const tukangHarga = makan ? s.withMakan : s.base;
+  const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
+
+  let msg = `Halo, saya ingin memesan jasa ${s.title} dengan tarif Rp${tukangHarga.toLocaleString()}${s.satuan}`;
+  if (kenek && jumlah > 0) {
+    const total = jumlah * kenekHarga;
+    msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: Rp${total.toLocaleString()}`;
+  }
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
 </script>
 
 </body>
 </html>
-
