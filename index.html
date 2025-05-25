@@ -19,46 +19,53 @@
       text-align: center;
     }
     .container {
-      max-width: 960px;
+      max-width: 1200px;
       margin: 20px auto;
       padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
     }
     .product {
       background-color: white;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       overflow: hidden;
-      margin-bottom: 20px;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
+      text-align: center;
+      padding: 20px;
     }
     .product img {
-      width: 160px;
-      height: 160px;
+      width: 100%;
+      height: 200px;
       object-fit: cover;
-    }
-    .product-info {
-      padding: 20px;
-      flex-grow: 1;
+      border-radius: 8px;
     }
     .product h2 {
-      margin-top: 0;
+      margin-top: 15px;
+      font-size: 18px;
     }
     .product p {
       margin: 10px 0;
+      font-size: 14px;
     }
     .product button {
       background-color: #27ae60;
       color: white;
       border: none;
       padding: 10px 20px;
-      font-size: 16px;
+      font-size: 14px;
       border-radius: 5px;
       cursor: pointer;
     }
     .product button:hover {
       background-color: #219150;
+    }
+    .kenek-options {
+      margin-top: 10px;
+      font-size: 13px;
     }
   </style>
 </head>
@@ -66,110 +73,88 @@
 
   <header>
     <h1>Jasa Tukang Bangunan Ahmad Royani</h1>
-    <p>Lokasi: Curug, Kec. Susukan Lebak, Kab. Cirebon, Jawa Barat</p>
-    <p>Pesan langsung via WhatsApp!</p>
+    <p>Curug, Kec. Susukan Lebak, Cirebon, Jawa Barat</p>
+    <p>Pesan jasa bangunan terpercaya langsung via WhatsApp</p>
   </header>
 
   <div class="container">
     <div class="product">
       <img src="images/tukang-harian.png" alt="Tukang Harian">
-      <div class="product-info">
-        <h2>Tukang Harian (Umum)</h2>
-        <p>Harga: Rp130.000/hari</p>
-        <button onclick="orderViaWA('Tukang Harian (Umum)', 'Rp130.000/hari')">Pesan via WhatsApp</button>
+      <h2>Tukang Harian (Umum)</h2>
+      <p>Rp150.000 - Rp160.000/hari</p>
+      <div class="kenek-options">
+        <label><input type="checkbox" id="includeKenek"> Tambah Kenek</label><br>
+        <label for="jumlahKenek">Jumlah Kenek:</label>
+        <input type="number" id="jumlahKenek" min="1" max="10" value="1" style="width: 60px;" disabled>
       </div>
+      <button onclick="orderTukangWithKenek()">Pesan via WhatsApp</button>
     </div>
 
-    <div class="product">
-      <img src="images/pasang-keramik.png" alt="Pasang Keramik">
-      <div class="product-info">
-        <h2>Pemasangan Keramik</h2>
-        <p>Harga: Rp55.000 per m²</p>
-        <button onclick="orderViaWA('Pemasangan Keramik', 'Rp55.000 per m²')">Pesan via WhatsApp</button>
-      </div>
-    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const includeKenek = document.getElementById("includeKenek");
+        const jumlahKenek = document.getElementById("jumlahKenek");
+        includeKenek.addEventListener("change", function () {
+          jumlahKenek.disabled = !this.checked;
+        });
+      });
 
-    <div class="product">
-      <img src="images/pasang-gypsum.png" alt="Plafon Gypsum">
-      <div class="product-info">
-        <h2>Pemasangan Plafon Gypsum</h2>
-        <p>Harga: Rp35.000 per m²</p>
-        <button onclick="orderViaWA('Pemasangan Plafon Gypsum', 'Rp35.000 per m²')">Pesan via WhatsApp</button>
-      </div>
-    </div>
+      function orderTukangWithKenek() {
+        const phone = '6289660171013';
+        const includeKenek = document.getElementById("includeKenek").checked;
+        const jumlahKenek = parseInt(document.getElementById("jumlahKenek").value);
 
-    <div class="product">
-      <img src="images/pasang-listrik.png" alt="Listrik">
-      <div class="product-info">
-        <h2>Pemasangan Stop Kontak & Lampu</h2>
-        <p>Harga: Rp255.000 per titik</p>
-        <button onclick="orderViaWA('Instalasi Stop Kontak & Lampu', 'Rp255.000 per titik')">Pesan via WhatsApp</button>
-      </div>
-    </div>
+        let message = "Halo, saya ingin memesan jasa Tukang Harian (Umum) dengan tarif Rp150.000 - Rp160.000/hari.";
 
-    <div class="product">
-      <img src="images/pasang-closet.png" alt="Sanitasi">
-      <div class="product-info">
-        <h2>Pemasangan Closet & Wastafel</h2>
-        <p>Harga: Rp265.000 per unit</p>
-        <button onclick="orderViaWA('Pemasangan Closet & Wastafel', 'Rp265.000 per unit')">Pesan via WhatsApp</button>
-      </div>
-    </div>
+        if (includeKenek && jumlahKenek > 0) {
+          const totalKenekMin = jumlahKenek * 110000;
+          const totalKenekMax = jumlahKenek * 120000;
+          message += `\n+ Tambahan Kenek ${jumlahKenek} orang. Estimasi biaya: Rp${totalKenekMin.toLocaleString()} - Rp${totalKenekMax.toLocaleString()}`;
+        }
 
-    <div class="product">
-      <img src="images/renovasi-rumah.png" alt="Renovasi Rumah">
-      <div class="product-info">
-        <h2>Renovasi Rumah (Paket Termasuk Material)</h2>
-        <p>Harga: Mulai Rp3.500.000 per m²</p>
-        <button onclick="orderViaWA('Renovasi Rumah', 'Mulai Rp3.500.000 per m²')">Pesan via WhatsApp</button>
-      </div>
-    </div>
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+      }
+    </script>
 
-    <div class="product">
-      <img src="images/bongkar-bangunan.png" alt="Bongkar Bangunan">
-      <div class="product-info">
-        <h2>Bongkar Bangunan Lama</h2>
-        <p>Harga: Rp60.000 per m²</p>
-        <button onclick="orderViaWA('Bongkar Bangunan Lama', 'Rp60.000 per m²')">Pesan via WhatsApp</button>
-      </div>
-    </div>
-
-    <div class="product">
-      <img src="images/pasang-batu.png" alt="Pasang Bata">
-      <div class="product-info">
-        <h2>Pemasangan Bata Merah</h2>
-        <p>Harga: Rp95.000 per m²</p>
-        <button onclick="orderViaWA('Pemasangan Bata Merah', 'Rp95.000 per m²')">Pesan via WhatsApp</button>
-      </div>
-    </div>
-
-    <div class="product">
-      <img src="images/aci-dinding.png" alt="Aci dan Plester">
-      <div class="product-info">
-        <h2>Plester & Aci Dinding</h2>
-        <p>Harga: Rp68.000 per m²</p>
-        <button onclick="orderViaWA('Plester & Aci Dinding', 'Rp68.000 per m²')">Pesan via WhatsApp</button>
-      </div>
-    </div>
-
-    <div class="product">
-      <img src="images/cat-tembok.png" alt="Cat Tembok">
-      <div class="product-info">
-        <h2>Pengecatan Tembok</h2>
-        <p>Harga: Rp30.000 per m²</p>
-        <button onclick="orderViaWA('Pengecatan Tembok', 'Rp30.000 per m²')">Pesan via WhatsApp</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function orderViaWA(serviceName, price) {
+    <!-- Daftar jasa lainnya -->
+    <script>
       const phone = '6289660171013';
-      const message = `Halo, saya ingin memesan jasa: ${serviceName} dengan tarif ${price}. Bisa dijelaskan lebih lanjut?`;
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-      window.open(url, '_blank');
-    }
-  </script>
+      function orderViaWA(service, price) {
+        const msg = `Halo, saya ingin memesan jasa: ${service} dengan tarif ${price}. Bisa dijelaskan lebih lanjut?`;
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        window.open(url, '_blank');
+      }
+    </script>
+
+    <script>
+      const services = [
+        { title: "Pemasangan Keramik", price: "Rp55.000/m²", img: "pasang-keramik.png" },
+        { title: "Plafon Gypsum", price: "Rp35.000/m²", img: "pasang-gypsum.png" },
+        { title: "Stop Kontak & Lampu", price: "Rp255.000/titik", img: "pasang-listrik.png" },
+        { title: "Closet & Wastafel", price: "Rp265.000/unit", img: "pasang-closet.png" },
+        { title: "Renovasi Rumah", price: "Rp3.500.000/m²", img: "renovasi-rumah.png" },
+        { title: "Pasang Bata Merah", price: "Rp95.000/m²", img: "pasang-bata.png" },
+        { title: "Cat Tembok", price: "Rp30.000/m²", img: "cat-tembok.png" },
+        { title: "Pasang Pintu & Kusen", price: "Rp200.000/unit", img: "pasang-pintu.png" },
+        { title: "Pemasangan Genteng", price: "Rp60.000/m²", img: "pasang-genteng.png" },
+        { title: "Pembuatan Dak Beton", price: "Rp1.200.000/m²", img: "dak-beton.png" },
+      ];
+
+      const container = document.querySelector(".container");
+      services.forEach(s => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <img src="images/${s.img}" alt="${s.title}">
+          <h2>${s.title}</h2>
+          <p>${s.price}</p>
+          <button onclick=\"orderViaWA('${s.title}', '${s.price}')\">Pesan via WhatsApp</button>
+        `;
+        container.appendChild(div);
+      });
+    </script>
+  </div>
 
 </body>
 </html>
