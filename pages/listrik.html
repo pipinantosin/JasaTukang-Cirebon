@@ -10,8 +10,8 @@
 <body>
 
 <header>
-  <h1>Tukang Listrik</h1>
-  <p>Jasa instalasi listrik rumah dan perbaikan</p>
+  <h1>Jasa Tukang Listrik</h1>
+  <p>Instalasi stop kontak, lampu, MCB, panel listrik, grounding, dan perbaikan korsleting</p>
 </header>
 
 <nav>
@@ -30,12 +30,115 @@
   <a href="renovasi.html">Renovasi</a>
 </nav>
 
-<div class="container">
-  <h2>Layanan:</h2>
-  <ul>
-    <li>Stop Kontak & Lampu</li>
-  </ul>
-</div>
+<div class="container" id="listrik-container"></div>
+
+<script>
+const phone = '6289660171013';
+const listrikServices = [
+  {
+    title: "Instalasi Stop Kontak & Saklar",
+    satuan: "/titik",
+    base: 50000,
+    withMakan: 55000,
+    kenekBase: 30000,
+    kenekMakan: 35000,
+    img: "../images/stop-kontak.png"
+  },
+  {
+    title: "Pemasangan Lampu",
+    satuan: "/titik",
+    base: 45000,
+    withMakan: 50000,
+    kenekBase: 30000,
+    kenekMakan: 35000,
+    img: "../images/pasang-lampu.png"
+  },
+  {
+    title: "Instalasi MCB / Panel",
+    satuan: "/unit",
+    base: 150000,
+    withMakan: 160000,
+    kenekBase: 60000,
+    kenekMakan: 70000,
+    img: "../images/panel-listrik.png"
+  },
+  {
+    title: "Grounding & Kabel Tray",
+    satuan: "/meter",
+    base: 70000,
+    withMakan: 75000,
+    kenekBase: 40000,
+    kenekMakan: 45000,
+    img: "../images/kabel-tray.png"
+  },
+  {
+    title: "Perbaikan Korsleting Listrik",
+    satuan: "/unit",
+    base: 120000,
+    withMakan: 130000,
+    kenekBase: 50000,
+    kenekMakan: 55000,
+    img: "../images/korsleting.png"
+  }
+];
+
+const container = document.getElementById("listrik-container");
+
+listrikServices.forEach((s, i) => {
+  const div = document.createElement("div");
+  div.className = "product";
+  div.innerHTML = `
+    <img src="${s.img}" alt="${s.title}">
+    <h2>${s.title}</h2>
+    <p id="harga-${i}">Rp${s.base.toLocaleString()}${s.satuan}</p>
+    <div class="kenek-options">
+      <label><input type="checkbox" id="makan-${i}"> Termasuk Uang Makan</label><br>
+      <label><input type="checkbox" id="kenek-${i}"> Tambah Kenek</label><br>
+      <label>Jumlah Kenek:</label>
+      <input type="number" id="jumlah-${i}" min="1" max="10" value="1" style="width:60px" disabled>
+      <p id="kenekHarga-${i}" style="display:none; margin: 5px 0 0;">Tarif Kenek: <span id="kenekRate-${i}">Rp${s.kenekBase.toLocaleString()}</span></p>
+    </div>
+    <button onclick="order(${i})">Pesan via WhatsApp</button>
+  `;
+  container.appendChild(div);
+
+  setTimeout(() => {
+    const makan = document.getElementById(`makan-${i}`);
+    const kenek = document.getElementById(`kenek-${i}`);
+    const jumlah = document.getElementById(`jumlah-${i}`);
+    const harga = document.getElementById(`harga-${i}`);
+    const kenekHarga = document.getElementById(`kenekHarga-${i}`);
+    const kenekRate = document.getElementById(`kenekRate-${i}`);
+
+    makan.addEventListener("change", () => {
+      harga.innerText = `Rp${(makan.checked ? s.withMakan : s.base).toLocaleString()}${s.satuan}`;
+      kenekRate.innerText = `Rp${(makan.checked ? s.kenekMakan : s.kenekBase).toLocaleString()}`;
+    });
+
+    kenek.addEventListener("change", () => {
+      jumlah.disabled = !kenek.checked;
+      kenekHarga.style.display = kenek.checked ? "block" : "none";
+    });
+  }, 0);
+});
+
+function order(id) {
+  const s = listrikServices[id];
+  const makan = document.getElementById(`makan-${id}`).checked;
+  const kenek = document.getElementById(`kenek-${id}`).checked;
+  const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
+  const tukangHarga = makan ? s.withMakan : s.base;
+  const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
+
+  let msg = `Halo, saya ingin memesan jasa ${s.title} dengan tarif Rp${tukangHarga.toLocaleString()}${s.satuan}`;
+  if (kenek && jumlah > 0) {
+    const total = jumlah * kenekHarga;
+    msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: Rp${total.toLocaleString()}`;
+  }
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+</script>
 
 </body>
 </html>
