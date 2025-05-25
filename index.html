@@ -87,12 +87,25 @@
     }
     .calc-total {
       font-weight: bold;
-      font-size: 18px;
+      font-size: 20px;
       margin: 20px 0 10px;
       text-align: right;
     }
     .calc-table input[type="number"] {
       width: 60px;
+      font-size: 16px;
+      padding: 5px;
+    }
+    .calc-table input[type="checkbox"] {
+      transform: scale(1.5);
+      margin-right: 5px;
+    }
+    .calc-table td:nth-child(3),
+    .calc-table td:nth-child(5) {
+      font-size: 16px;
+    }
+    .calc-table td {
+      vertical-align: middle;
     }
     .wa-button {
       display: inline-block;
@@ -115,32 +128,11 @@
 
   <header>
     <h1>Jasa Tukang Bangunan Ahmad Royani</h1>
-    <p>Curug, Kec. Susukan Lebak, Cirebon, Jawa Barat</p></div>
+    <p>Curug, Kec. Susukan Lebak, Cirebon, Jawa Barat</p>
     <p>Pesan jasa bangunan terpercaya langsung via WhatsApp</p>
   </header>
 
   <div class="container" id="service-container"></div>
-
-  <section style="padding: 20px;">
-    <h2 style="text-align:center; color:#2c3e50;">Kalkulator Biaya Kusen</h2>
-    <table class="calc-table">
-      <thead>
-        <tr>
-          <th>Pilih</th>
-          <th>Material</th>
-          <th>Harga Satuan (Rp)</th>
-          <th>Jumlah</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
-      <tbody id="material-body"></tbody>
-    </table>
-    <div class="calc-total" id="total-estimasi">
-      Estimasi Total: Rp0
-    </div>
-    <a href="#" class="wa-button" id="kirim-wa" target="_blank">Kirim via WhatsApp</a>
-  </section>
-
 
   <script>
     const phone = '6289660171013';
@@ -217,185 +209,120 @@
     }
   </script>
 
-  <script>
-    const phoneNumber = "6289660171013"; // Nomor WhatsApp tujuan
+<div class="container kalkulator">
+<section style="padding: 20px;">
+  <h2 style="text-align:center; color:#2c3e50;">Kalkulator Biaya Kusen</h2>
+  <table class="calc-table">
+    <thead>
+      <tr>
+        <th>Pilih</th>
+        <th>Material</th>
+        <th>Harga Satuan (Rp)</th>
+        <th>Jumlah</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody id="material-body"></tbody>
+  </table>
+  <div class="calc-total" id="total-estimasi">Estimasi Total: Rp0</div>
+  <a href="#" class="wa-button" id="kirim-wa" target="_blank">Kirim via WhatsApp</a>
+</section>
 
-    const materials = [
-      { nama: "Kusen Kayu Kamper", harga: 75000 },
-      { nama: "Sekrup (paket)", harga: 15000 },
-      { nama: "Engsel", harga: 10000 },
-      { nama: "Kaca Polos 5mm", harga: 60000 },
-      { nama: "Cat Kayu", harga: 45000 },
-      { nama: "Biaya Jasa Pemasangan", harga: 120000 }
-    ];
+<section style="padding: 20px;">
+  <h2 style="text-align:center; color:#2c3e50;">Kalkulator Biaya Pemasangan Pintu</h2>
+  <table class="calc-table">
+    <thead><tr><th>Pilih</th><th>Material</th><th>Harga Satuan (Rp)</th><th>Jumlah</th><th>Subtotal</th></tr></thead>
+    <tbody id="pintu-body"></tbody>
+  </table>
+  <div class="calc-total" id="pintu-total">Estimasi Total: Rp0</div>
+  <a href="#" class="wa-button" id="pintu-wa" target="_blank">Kirim via WhatsApp</a>
+</section>
 
-    const tbody = document.getElementById("material-body");
-    const totalDisplay = document.getElementById("total-estimasi");
-    const waButton = document.getElementById("kirim-wa");
+<section style="padding: 20px;">
+  <h2 style="text-align:center; color:#2c3e50;">Kalkulator Biaya Pemasangan Jendela</h2>
+  <table class="calc-table">
+    <thead><tr><th>Pilih</th><th>Material</th><th>Harga Satuan (Rp)</th><th>Jumlah</th><th>Subtotal</th></tr></thead>
+    <tbody id="jendela-body"></tbody>
+  </table>
+  <div class="calc-total" id="jendela-total">Estimasi Total: Rp0</div>
+  <a href="#" class="wa-button" id="jendela-wa" target="_blank">Kirim via WhatsApp</a>
+</section>
 
-    materials.forEach((item, index) => {
-      const row = document.createElement("tr");
+<p style="text-align:center; font-style:italic; color:#555; padding: 20px;">
+  * Biaya di atas hanya perkiraan. Harga dapat berubah tergantung merek, lokasi, dan kondisi pekerjaan di lapangan.
+</p>
+</div>
 
-      row.innerHTML = `
-        <td><input type="checkbox" id="check-${index}"></td>
-        <td>${item.nama}</td>
-        <td>Rp${item.harga.toLocaleString()}</td>
-        <td><input type="number" id="qty-${index}" value="1" min="1" disabled></td>
-        <td id="subtotal-${index}">Rp0</td>
-      `;
 
-      tbody.appendChild(row);
-
-      const checkbox = row.querySelector(`#check-${index}`);
-      const qtyInput = row.querySelector(`#qty-${index}`);
-
-      checkbox.addEventListener("change", () => {
-        qtyInput.disabled = !checkbox.checked;
-        hitungTotal();
-      });
-
-      qtyInput.addEventListener("input", hitungTotal);
+<script>
+const phoneNumber = "6289660171013";
+const materials = [
+  { nama: "Kusen Kayu Kamper", harga: 75000 },
+  { nama: "Sekrup (paket)", harga: 15000 },
+  { nama: "Engsel", harga: 10000 },
+  { nama: "Kaca Polos 5mm", harga: 60000 },
+  { nama: "Cat Kayu", harga: 45000 },
+  { nama: "Biaya Jasa Pemasangan", harga: 120000 }
+];
+function setupKalkulator(idPrefix, materialList, tbodyId, totalId, waId) {
+  const tbody = document.getElementById(tbodyId);
+  const totalDisplay = document.getElementById(totalId);
+  const waButton = document.getElementById(waId);
+  materialList.forEach((item, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><input type="checkbox" id="${idPrefix}-check-${index}"></td>
+      <td>${item.nama}</td>
+      <td>Rp${item.harga.toLocaleString()}</td>
+      <td><input type="number" id="${idPrefix}-qty-${index}" value="1" min="1" disabled></td>
+      <td id="${idPrefix}-subtotal-${index}">Rp0</td>
+    `;
+    tbody.appendChild(row);
+    const checkbox = document.getElementById(`${idPrefix}-check-${index}`);
+    const qtyInput = document.getElementById(`${idPrefix}-qty-${index}`);
+    checkbox.addEventListener("change", () => {
+      qtyInput.disabled = !checkbox.checked;
+      hitung();
     });
-
-    function hitungTotal() {
-      let total = 0;
-      let pesan = `Saya ingin estimasi biaya kusen:\n`;
-
-      materials.forEach((item, index) => {
-        const checked = document.getElementById(`check-${index}`).checked;
-        const qty = parseInt(document.getElementById(`qty-${index}`).value) || 0;
-        const subtotalCell = document.getElementById(`subtotal-${index}`);
-
-        if (checked) {
-          const subtotal = item.harga * qty;
-          subtotalCell.innerText = `Rp${subtotal.toLocaleString()}`;
-          total += subtotal;
-          pesan += `- ${item.nama} x${qty} = Rp${subtotal.toLocaleString()}\n`;
-        } else {
-          subtotalCell.innerText = `Rp0`;
-        }
-      });
-
-      totalDisplay.innerText = `Estimasi Total: Rp${total.toLocaleString()}`;
-      pesan += `Total Estimasi: Rp${total.toLocaleString()}`;
-      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(pesan)}`;
-      waButton.href = url;
-    }
-  </script>
-
-
-  <section style="padding: 20px;">
-    <h2 style="text-align:center; color:#2c3e50;">Kalkulator Biaya Pemasangan Pintu</h2>
-    <table class="calc-table">
-      <thead>
-        <tr>
-          <th>Pilih</th>
-          <th>Material</th>
-          <th>Harga Satuan (Rp)</th>
-          <th>Jumlah</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
-      <tbody id="pintu-body"></tbody>
-    </table>
-    <div class="calc-total" id="pintu-total">Estimasi Total: Rp0</div>
-    <a href="#" class="wa-button" id="pintu-wa" target="_blank">Kirim via WhatsApp</a>
-  </section>
-
-  <section style="padding: 20px;">
-    <h2 style="text-align:center; color:#2c3e50;">Kalkulator Biaya Pemasangan Jendela</h2>
-    <table class="calc-table">
-      <thead>
-        <tr>
-          <th>Pilih</th>
-          <th>Material</th>
-          <th>Harga Satuan (Rp)</th>
-          <th>Jumlah</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
-      <tbody id="jendela-body"></tbody>
-    </table>
-    <div class="calc-total" id="jendela-total">Estimasi Total: Rp0</div>
-    <a href="#" class="wa-button" id="jendela-wa" target="_blank">Kirim via WhatsApp</a>
-  </section>
-
-  <div style="max-width: 1200px; margin: 0 auto; padding: 20px;"><p style="text-align:center; font-style:italic; color:#555;">
-    * Biaya di atas hanya perkiraan. Harga dapat berubah tergantung merek, lokasi, dan kondisi pekerjaan di lapangan.
-  </p>
-
-
-  <script>
-    const pintuMaterials = [
-      { nama: "Daun Pintu Panel", harga: 350000 },
-      { nama: "Engsel Pintu", harga: 15000 },
-      { nama: "Kunci Pintu", harga: 30000 },
-      { nama: "Biaya Pemasangan Pintu", harga: 100000 }
-    ];
-    const jendelaMaterials = [
-      { nama: "Daun Jendela", harga: 250000 },
-      { nama: "Engsel Jendela", harga: 12000 },
-      { nama: "Pegangan Jendela", harga: 10000 },
-      { nama: "Biaya Pemasangan Jendela", harga: 90000 }
-    ];
-
-    function setupCalculator(idPrefix, materials, tbodyId, totalId, waId) {
-      const tbody = document.getElementById(tbodyId);
-      const totalDisplay = document.getElementById(totalId);
-      const waButton = document.getElementById(waId);
-
-      materials.forEach((item, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td><input type="checkbox" id="${idPrefix}-check-${index}"></td>
-          <td>${item.nama}</td>
-          <td>Rp${item.harga.toLocaleString()}</td>
-          <td><input type="number" id="${idPrefix}-qty-${index}" value="1" min="1" disabled></td>
-          <td id="${idPrefix}-subtotal-${index}">Rp0</td>
-        `;
-        tbody.appendChild(row);
-
-        const checkbox = row.querySelector(`#${idPrefix}-check-${index}`);
-        const qtyInput = row.querySelector(`#${idPrefix}-qty-${index}`);
-
-        checkbox.addEventListener("change", () => {
-          qtyInput.disabled = !checkbox.checked;
-          hitung();
-        });
-        qtyInput.addEventListener("input", hitung);
-      });
-
-      function hitung() {
-        let total = 0;
-        let pesan = `Saya ingin estimasi biaya pemasangan ${idPrefix}:
+    qtyInput.addEventListener("input", hitung);
+  });
+  function hitung() {
+    let total = 0;
+    let pesan = `Saya ingin estimasi biaya ${idPrefix}:
 `;
-
-        materials.forEach((item, index) => {
-          const checked = document.getElementById(`${idPrefix}-check-${index}`).checked;
-          const qty = parseInt(document.getElementById(`${idPrefix}-qty-${index}`).value) || 0;
-          const subtotalCell = document.getElementById(`${idPrefix}-subtotal-${index}`);
-
-          if (checked) {
-            const subtotal = item.harga * qty;
-            subtotalCell.innerText = `Rp${subtotal.toLocaleString()}`;
-            total += subtotal;
-            pesan += `- ${item.nama} x${qty} = Rp${subtotal.toLocaleString()}
+    materialList.forEach((item, index) => {
+      const checked = document.getElementById(`${idPrefix}-check-${index}`).checked;
+      const qty = parseInt(document.getElementById(`${idPrefix}-qty-${index}`).value) || 0;
+      const subtotalCell = document.getElementById(`${idPrefix}-subtotal-${index}`);
+      if (checked) {
+        const subtotal = item.harga * qty;
+        subtotalCell.innerText = `Rp${subtotal.toLocaleString()}`;
+        total += subtotal;
+        pesan += `- ${item.nama} x${qty} = Rp${subtotal.toLocaleString()}
 `;
-          } else {
-            subtotalCell.innerText = `Rp0`;
-          }
-        });
-
-        totalDisplay.innerText = `Estimasi Total: Rp${total.toLocaleString()}`;
-        pesan += `Total Estimasi: Rp${total.toLocaleString()}`;
-        const url = `https://wa.me/6289660171013?text=${encodeURIComponent(pesan)}`;
-        waButton.href = url;
+      } else {
+        subtotalCell.innerText = `Rp0`;
       }
-    }
-
-    setupCalculator("pintu", pintuMaterials, "pintu-body", "pintu-total", "pintu-wa");
-    setupCalculator("jendela", jendelaMaterials, "jendela-body", "jendela-total", "jendela-wa");
-  </script>
+    });
+    totalDisplay.innerText = `Estimasi Total: Rp${total.toLocaleString()}`;
+    pesan += `Total Estimasi: Rp${total.toLocaleString()}`;
+    waButton.href = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(pesan)}`;
+  }
+}
+setupKalkulator("material", materials, "material-body", "total-estimasi", "kirim-wa");
+setupKalkulator("pintu", [
+  { nama: "Daun Pintu Panel", harga: 350000 },
+  { nama: "Engsel Pintu", harga: 15000 },
+  { nama: "Kunci Pintu", harga: 30000 },
+  { nama: "Biaya Pemasangan Pintu", harga: 100000 }
+], "pintu-body", "pintu-total", "pintu-wa");
+setupKalkulator("jendela", [
+  { nama: "Daun Jendela", harga: 250000 },
+  { nama: "Engsel Jendela", harga: 12000 },
+  { nama: "Pegangan Jendela", harga: 10000 },
+  { nama: "Biaya Pemasangan Jendela", harga: 90000 }
+], "jendela-body", "jendela-total", "jendela-wa");
+</script>
 
 </body>
 </html>
