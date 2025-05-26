@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Instalasi Listrik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto', sans-serif; background: #f5f5f5; padding: 20px; }
+    .container { background: #fff; max-width: 800px; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #2c3e50; margin-bottom: 25px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; }
+    input, select { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+    .checkbox-group { margin: 5px 0; }
+    button { background-color: #27ae60; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer; }
+    button:hover { background-color: #219150; }
+    .hasil { margin-top: 20px; font-weight: bold; font-size: 18px; }
+    .pesan-wa { margin-top: 20px; text-align: center; }
+    .pesan-wa a { background: #25d366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; }
+    .pesan-wa a:hover { background-color: #1ebe5d; }
+    .catatan { margin-top: 25px; font-size: 14px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kalkulator Instalasi Listrik</h1>
+
+    <div class="form-group">
+      <label for="titik">Jumlah Titik Listrik (lampu/saklar/stop kontak)</label>
+      <input type="number" id="titik" placeholder="Contoh: 12">
+    </div>
+
+    <div class="form-group">
+      <label for="panjangKabel">Panjang Kabel (meter)</label>
+      <input type="number" id="panjangKabel" placeholder="Contoh: 100">
+    </div>
+
+    <div class="form-group">
+      <label for="jenisKabel">Pilih Jenis Kabel</label>
+      <select id="jenisKabel">
+        <option value="nym">NYM 2x1.5 (Rp 15.000/m)</option>
+        <option value="nyy">NYY 3x2.5 (Rp 25.000/m)</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Pilih Komponen Tambahan:</label>
+      <div class="checkbox-group"><label><input type="checkbox" id="mcbs" checked> MCB (Rp 75.000/unit)</label></div>
+      <div class="checkbox-group"><label><input type="checkbox" id="boxmcb"> Box MCB (Rp 55.000/unit)</label></div>
+      <div class="checkbox-group"><label><input type="checkbox" id="lampu"> Lampu LED (Rp 35.000/titik)</label></div>
+      <div class="checkbox-group"><label><input type="checkbox" id="pipa"> Pipa Listrik (Rp 7.000/m)</label></div>
+    </div>
+
+    <button onclick="hitungListrik()">Hitung Estimasi</button>
+    <div class="hasil" id="output"></div>
+    <div class="pesan-wa" id="pesanWa" style="display:none;">
+      <a id="linkWa" href="#" target="_blank">Kirim ke WhatsApp</a>
+    </div>
+    <div class="catatan">
+      *Estimasi harga hanya untuk material. Belum termasuk biaya jasa pemasangan dan peralatan tambahan lainnya.
+    </div>
+  </div>
+
+  <script>
+    function hitungListrik() {
+      const titik = parseInt(document.getElementById("titik").value);
+      const panjang = parseInt(document.getElementById("panjangKabel").value);
+      const jenis = document.getElementById("jenisKabel").value;
+
+      if (isNaN(titik) || titik <= 0 || isNaN(panjang) || panjang <= 0) {
+        alert("Masukkan jumlah titik dan panjang kabel yang valid.");
+        return;
+      }
+
+      const hargaKabel = jenis === "nym" ? 15000 : 25000;
+      const hargaMCB = 75000;
+      const hargaBox = 55000;
+      const hargaLampu = 35000;
+      const hargaPipa = 7000;
+
+      const totalKabel = panjang * hargaKabel;
+      const totalMCB = document.getElementById("mcbs").checked ? hargaMCB : 0;
+      const totalBox = document.getElementById("boxmcb").checked ? hargaBox : 0;
+      const totalLampu = document.getElementById("lampu").checked ? titik * hargaLampu : 0;
+      const totalPipa = document.getElementById("pipa").checked ? panjang * hargaPipa : 0;
+
+      const total = totalKabel + totalMCB + totalBox + totalLampu + totalPipa;
+
+      const detail = `
+        <ul>
+          <li>Kabel (${panjang} m × Rp ${hargaKabel.toLocaleString()}): Rp ${totalKabel.toLocaleString()}</li>
+          ${totalMCB ? `<li>MCB: Rp ${totalMCB.toLocaleString()}</li>` : ''}
+          ${totalBox ? `<li>Box MCB: Rp ${totalBox.toLocaleString()}</li>` : ''}
+          ${totalLampu ? `<li>Lampu LED (${titik} titik): Rp ${totalLampu.toLocaleString()}</li>` : ''}
+          ${totalPipa ? `<li>Pipa Listrik (${panjang} m): Rp ${totalPipa.toLocaleString()}</li>` : ''}
+        </ul>
+        <strong>Total Estimasi: Rp ${total.toLocaleString('id-ID')}</strong>
+      `;
+
+      document.getElementById("output").innerHTML = detail;
+
+      const pesan = `Halo, saya ingin konsultasi instalasi listrik.%0ATitik: ${titik} titik%0AKabel: ${panjang} m (${jenis.toUpperCase()} × Rp ${hargaKabel.toLocaleString()}) = Rp ${totalKabel.toLocaleString()}` +
+        (totalMCB ? `%0AMCB: Rp ${totalMCB.toLocaleString()}` : '') +
+        (totalBox ? `%0ABox MCB: Rp ${totalBox.toLocaleString()}` : '') +
+        (totalLampu ? `%0ALampu LED (${titik} titik): Rp ${totalLampu.toLocaleString()}` : '') +
+        (totalPipa ? `%0APipa Listrik (${panjang} m): Rp ${totalPipa.toLocaleString()}` : '') +
+        `%0ATotal Estimasi: Rp ${total.toLocaleString()}`;
+
+      document.getElementById("linkWa").href = `https://wa.me/6289660171013?text=${encodeURIComponent(pesan)}`;
+      document.getElementById("pesanWa").style.display = "block";
+    }
+  </script>
+</body>
+</html>
