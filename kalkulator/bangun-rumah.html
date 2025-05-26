@@ -93,14 +93,14 @@
     function hitungWajib(label, kebutuhan, harga, satuan) {
       const subtotal = kebutuhan * harga;
       total += subtotal;
-      rincian.push(`<li>${label} (${kebutuhan} ${satuan}): Rp ${subtotal.toLocaleString('id-ID')}</li>`);
+      rincian.push(`${label} (${kebutuhan} ${satuan}): Rp ${subtotal.toLocaleString('id-ID')}`);
     }
 
     function hitungOpsional(label, kebutuhan, harga, satuan, idCheck) {
       if (document.getElementById(idCheck).checked) {
         const subtotal = kebutuhan * harga;
         total += subtotal;
-        rincian.push(`<li>${label} (${kebutuhan} ${satuan}): Rp ${subtotal.toLocaleString('id-ID')}</li>`);
+        rincian.push(`${label} (${kebutuhan} ${satuan}): Rp ${subtotal.toLocaleString('id-ID')}`);
       }
     }
 
@@ -128,12 +128,14 @@
       const harga = parseFloat(document.getElementById(jenis === 'baja' ? 'hargaRangkaAtapBaja' : 'hargaRangkaAtapKayu').value);
       const subtotal = kebutuhan.rangkaAtap * harga;
       total += subtotal;
-      rincian.push(`<li>Rangka Atap (${jenis === 'baja' ? 'Baja Ringan' : 'Kayu'}) (${kebutuhan.rangkaAtap} m²): Rp ${subtotal.toLocaleString('id-ID')}</li>`);
+      rincian.push(`Rangka Atap (${jenis === 'baja' ? 'Baja Ringan' : 'Kayu'}) (${kebutuhan.rangkaAtap} m²): Rp ${subtotal.toLocaleString('id-ID')}`);
     }
 
-    output.innerHTML = `<p>Total Perkiraan Biaya Material:</p><ul style="text-align:left;">${rincian.join('')}</ul><strong>Total: Rp ${total.toLocaleString('id-ID')}</strong>`;
-    const message = `Halo, saya sudah cek kalkulator bangun rumah.\nLuas: ${luas} m²\nRincian material:\n${rincian.map(r => r.replace(/<[^>]+>/g, '')).join('\n')}\nTotal estimasi: Rp ${total.toLocaleString('id-ID')}\nMohon dikonfirmasi kembali, karena saya bukan pihak tukang langsung.`;
-    linkWa.href = `https://wa.me/6289660171013?text=${encodeURIComponent(message)}`;
+    const rincianHTML = rincian.map(r => `<li>${r}</li>`).join('');
+    output.innerHTML = `<p>Total Perkiraan Biaya Material:</p><ul style="text-align:left;">${rincianHTML}</ul><strong>Total: Rp ${total.toLocaleString('id-ID')}</strong>`;
+
+    const message = `Halo, saya sudah cek kalkulator bangun rumah.%0ALuas: ${luas} m²%0ARincian material:%0A- ${rincian.join('%0A- ')}%0ATotal estimasi: Rp ${total.toLocaleString('id-ID')}`;
+    linkWa.href = `https://wa.me/6289660171013?text=${message}`;
     waDiv.style.display = 'block';
   }
 </script>
