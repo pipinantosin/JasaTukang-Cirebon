@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Interior</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto', sans-serif; background: #f5f5f5; padding: 20px; }
+    .container { background: #fff; max-width: 800px; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #2c3e50; margin-bottom: 25px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; }
+    input[type='number'] { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+    .checkbox-group { margin-bottom: 10px; }
+    button { background-color: #27ae60; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer; }
+    button:hover { background-color: #219150; }
+    .hasil { margin-top: 20px; font-weight: bold; font-size: 18px; }
+    .pesan-wa { margin-top: 20px; text-align: center; }
+    .pesan-wa a { background: #25d366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; }
+    .pesan-wa a:hover { background-color: #1ebe5d; }
+    .catatan { margin-top: 25px; font-size: 14px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kalkulator Interior</h1>
+    <div class="form-group">
+      <label for="luas">Luas Area Interior (m²)</label>
+      <input type="number" id="luas" placeholder="Contoh: 50">
+    </div>
+    <div class="form-group">
+      <label>Pilih Material yang Dibutuhkan:</label>
+      <div class="checkbox-group"><label><input type="checkbox" id="plafon" checked> Plafon Gypsum (Rp 160.000/m²)</label></div>
+      <div class="checkbox-group"><label><input type="checkbox" id="partisi"> Partisi Gypsum (Rp 180.000/m²)</label></div>
+      <div class="checkbox-group"><label><input type="checkbox" id="vinyl"> Lantai Vinyl (Rp 130.000/m²)</label></div>
+      <div class="checkbox-group"><label><input type="checkbox" id="parket"> Lantai Parket (Rp 150.000/m²)</label></div>
+      <div class="checkbox-group"><label><input type="checkbox" id="wallpaper"> Wallpaper Dinding (Rp 80.000/m²)</label></div>
+    </div>
+    <button onclick="hitungInterior()">Hitung Estimasi</button>
+    <div class="hasil" id="output"></div>
+    <div class="pesan-wa" id="pesanWa" style="display:none;">
+      <a id="linkWa" href="#" target="_blank">Kirim ke WhatsApp</a>
+    </div>
+    <div class="catatan">
+      *Harga hanya estimasi material (belum termasuk biaya tukang atau finishing).<br>
+      *Silakan konsultasikan kebutuhan lebih lanjut untuk penyesuaian proyek Anda.
+    </div>
+  </div>
+
+  <script>
+    function hitungInterior() {
+      const luas = parseFloat(document.getElementById("luas").value);
+      if (isNaN(luas) || luas <= 0) {
+        alert("Masukkan luas area yang valid.");
+        return;
+      }
+
+      const material = [
+        { id: "plafon", nama: "Plafon Gypsum", harga: 160000 },
+        { id: "partisi", nama: "Partisi Gypsum", harga: 180000 },
+        { id: "vinyl", nama: "Lantai Vinyl", harga: 130000 },
+        { id: "parket", nama: "Lantai Parket", harga: 150000 },
+        { id: "wallpaper", nama: "Wallpaper Dinding", harga: 80000 }
+      ];
+
+      let total = 0;
+      let detail = "<ul>";
+      let pesan = `Halo, saya ingin konsultasi estimasi interior rumah.%0ALuas Area: ${luas} m²`;
+
+      material.forEach(item => {
+        const checkbox = document.getElementById(item.id);
+        if (checkbox && checkbox.checked) {
+          const subtotal = item.harga * luas;
+          total += subtotal;
+          detail += `<li>${item.nama}: Rp ${subtotal.toLocaleString('id-ID')}</li>`;
+          pesan += `%0A${item.nama}: Rp ${subtotal.toLocaleString('id-ID')}`;
+        }
+      });
+
+      detail += `</ul><strong>Total Estimasi: Rp ${total.toLocaleString('id-ID')}</strong>`;
+      document.getElementById("output").innerHTML = detail;
+
+      const link = `https://wa.me/6289660171013?text=${pesan}`;
+      document.getElementById("linkWa").href = link;
+      document.getElementById("pesanWa").style.display = "block";
+    }
+  </script>
+</body>
+</html>
