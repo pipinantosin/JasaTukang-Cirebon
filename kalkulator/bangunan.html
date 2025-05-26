@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Estimasi Bangunan Lengkap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto', sans-serif; padding: 20px; background: #f2f2f2; color: #333; }
+    .container { max-width: 900px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h1 { text-align: center; margin-bottom: 30px; color: #2c3e50; }
+    .form-group { margin-bottom: 15px; }
+    label { font-weight: bold; display: block; margin-bottom: 5px; }
+    input[type="number"], select { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    input[type="checkbox"] { margin-right: 5px; }
+    button { background: #27ae60; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+    button:hover { background: #1f8f4d; }
+    .hasil { margin-top: 20px; font-weight: bold; font-size: 18px; }
+    .pesan-wa { margin-top: 20px; text-align: center; }
+    .pesan-wa a { background-color: #25d366; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; }
+    .pesan-wa a:hover { background-color: #1ebe5d; }
+    .catatan { margin-top: 25px; font-size: 14px; color: #777; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kalkulator Estimasi Bangunan Lengkap</h1>
+    <div class="form-group">
+      <label for="luas">Luas Bangunan (m²)</label>
+      <input type="number" id="luas" placeholder="Contoh: 100">
+    </div>
+    <div class="form-group">
+      <label for="lantai">Jumlah Lantai</label>
+      <input type="number" id="lantai" value="1">
+    </div>
+    <div class="form-group">
+      <label><input type="checkbox" id="opsiPlafon" checked> Sertakan Plafon</label>
+      <label><input type="checkbox" id="opsiCat" checked> Sertakan Cat</label>
+      <label><input type="checkbox" id="opsiListrik" checked> Sertakan Instalasi Listrik</label>
+      <label><input type="checkbox" id="opsiAir" checked> Sertakan Instalasi Air</label>
+    </div>
+    <button onclick="hitungBangunan()">Hitung Estimasi</button>
+    <div class="hasil" id="output"></div>
+    <div class="pesan-wa" id="pesanWa" style="display:none;">
+      <a id="linkWa" href="#" target="_blank">Kirim ke WhatsApp</a>
+    </div>
+    <div class="catatan">
+      *Estimasi berdasarkan harga material umum: semen, pasir, batu split, bata merah, besi beton, genteng, plafon, cat, instalasi dasar listrik & air.<br>
+      *Belum termasuk upah tukang, kusen, pintu, jendela, finishing tambahan, dan biaya tak terduga.<br>
+      *Silakan konsultasi untuk penyesuaian spesifikasi dan lokasi.
+    </div>
+  </div>
+
+  <script>
+    function hitungBangunan() {
+      const luas = parseFloat(document.getElementById('luas').value);
+      const lantai = parseInt(document.getElementById('lantai').value);
+      if (isNaN(luas) || isNaN(lantai)) return alert("Harap masukkan nilai yang valid.");
+
+      const opsiPlafon = document.getElementById('opsiPlafon').checked;
+      const opsiCat = document.getElementById('opsiCat').checked;
+      const opsiListrik = document.getElementById('opsiListrik').checked;
+      const opsiAir = document.getElementById('opsiAir').checked;
+
+      const totalLuas = luas * lantai;
+      let total = 0;
+      let rincian = [];
+
+      const harga = {
+        semen: 85000,
+        pasir: 300000,
+        batu: 350000,
+        bata: 900,
+        besi: 95000,
+        genteng: 70000,
+        plafon: 75000,
+        cat: 35000,
+        listrik: 1500000,
+        air: 1250000
+      };
+
+      const kebutuhan = {
+        semen: Math.ceil((12 * totalLuas) / 50),
+        pasir: Math.ceil(0.05 * totalLuas),
+        batu: Math.ceil(0.03 * totalLuas),
+        bata: Math.ceil(70 * totalLuas),
+        besi: Math.ceil(2.5 * totalLuas),
+        genteng: Math.ceil(1.1 * totalLuas)
+      };
+
+      const subtotal = {
+        semen: kebutuhan.semen * harga.semen,
+        pasir: kebutuhan.pasir * harga.pasir,
+        batu: kebutuhan.batu * harga.batu,
+        bata: kebutuhan.bata * harga.bata,
+        besi: kebutuhan.besi * harga.besi,
+        genteng: kebutuhan.genteng * harga.genteng
+      };
+
+      total += subtotal.semen + subtotal.pasir + subtotal.batu + subtotal.bata + subtotal.besi + subtotal.genteng;
+      rincian.push(`Semen (${kebutuhan.semen} sak): Rp ${subtotal.semen.toLocaleString('id-ID')}`);
+      rincian.push(`Pasir (${kebutuhan.pasir} m³): Rp ${subtotal.pasir.toLocaleString('id-ID')}`);
+      rincian.push(`Batu Split (${kebutuhan.batu} m³): Rp ${subtotal.batu.toLocaleString('id-ID')}`);
+      rincian.push(`Bata Merah (${kebutuhan.bata} biji): Rp ${subtotal.bata.toLocaleString('id-ID')}`);
+      rincian.push(`Besi Beton (${kebutuhan.besi} batang): Rp ${subtotal.besi.toLocaleString('id-ID')}`);
+      rincian.push(`Genteng (${kebutuhan.genteng} m²): Rp ${subtotal.genteng.toLocaleString('id-ID')}`);
+
+      if (opsiPlafon) {
+        const plafon = totalLuas * harga.plafon;
+        total += plafon;
+        rincian.push(`Plafon (${totalLuas} m²): Rp ${plafon.toLocaleString('id-ID')}`);
+      }
+      if (opsiCat) {
+        const cat = totalLuas * harga.cat;
+        total += cat;
+        rincian.push(`Cat Tembok (${totalLuas} m²): Rp ${cat.toLocaleString('id-ID')}`);
+      }
+      if (opsiListrik) {
+        const listrik = harga.listrik * lantai;
+        total += listrik;
+        rincian.push(`Instalasi Listrik (${lantai} lantai): Rp ${listrik.toLocaleString('id-ID')}`);
+      }
+      if (opsiAir) {
+        const air = harga.air * lantai;
+        total += air;
+        rincian.push(`Instalasi Air Bersih (${lantai} lantai): Rp ${air.toLocaleString('id-ID')}`);
+      }
+
+      document.getElementById('output').innerHTML = `<ul><li>${rincian.join('</li><li>')}</li></ul><strong>Total Estimasi: Rp ${total.toLocaleString('id-ID')}</strong>`;
+
+      const pesan = `Halo, saya ingin konsultasi estimasi biaya bangun rumah.%0ALuas: ${luas} m² (${lantai} lantai)%0A${rincian.map(r => `- ${r}`).join('%0A')}%0ATotal estimasi: Rp ${total.toLocaleString('id-ID')}`;
+      document.getElementById('linkWa').href = `https://wa.me/6289660171013?text=${encodeURIComponent(pesan)}`;
+      document.getElementById('pesanWa').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
