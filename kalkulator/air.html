@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Instalasi Air Bersih</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto', sans-serif; background: #f5f5f5; padding: 20px; }
+    .container { background: #fff; max-width: 800px; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #2c3e50; margin-bottom: 25px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; }
+    input, select { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+    button { background-color: #27ae60; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer; }
+    button:hover { background-color: #219150; }
+    .hasil { margin-top: 20px; font-weight: bold; font-size: 18px; }
+    .pesan-wa { margin-top: 20px; text-align: center; }
+    .pesan-wa a { background: #25d366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; }
+    .pesan-wa a:hover { background-color: #1ebe5d; }
+    .catatan { margin-top: 25px; font-size: 14px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kalkulator Instalasi Air Bersih</h1>
+    <div class="form-group">
+      <label for="jumlahTitik">Jumlah Titik Air (keran, shower, kloset, dll)</label>
+      <input type="number" id="jumlahTitik" placeholder="Contoh: 8">
+    </div>
+    <div class="form-group">
+      <label for="jenisPipa">Pilih Jenis Pipa</label>
+      <select id="jenisPipa">
+        <option value="pvc">PVC Standar</option>
+        <option value="pvc-aw">PVC AW (tekanan tinggi)</option>
+        <option value="ppr">PPR (lebih tahan lama)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label><input type="checkbox" id="includeToren" checked> Sertakan Tandon Air (Toren)</label>
+      <label><input type="checkbox" id="includePompa" checked> Sertakan Pompa Air</label>
+    </div>
+    <button onclick="hitungAir()">Hitung Estimasi</button>
+    <div class="hasil" id="output"></div>
+    <div class="pesan-wa" id="pesanWa" style="display:none;">
+      <a id="linkWa" href="#" target="_blank">Kirim ke WhatsApp</a>
+    </div>
+    <div class="catatan">
+      *Harga estimasi:
+      - PVC Standar: Rp 120.000/titik | PVC AW: Rp 150.000/titik | PPR: Rp 200.000/titik<br>
+      - Tandon Air: Rp 1.200.000 | Pompa Air: Rp 950.000<br>
+      *Harga tidak termasuk biaya pemasangan.
+    </div>
+  </div>
+
+  <script>
+    function hitungAir() {
+      const titik = parseInt(document.getElementById('jumlahTitik').value);
+      const jenis = document.getElementById('jenisPipa').value;
+      const pakaiToren = document.getElementById('includeToren').checked;
+      const pakaiPompa = document.getElementById('includePompa').checked;
+
+      if (isNaN(titik) || titik <= 0) return alert("Masukkan jumlah titik air yang valid.");
+
+      const hargaPipa = {
+        pvc: 120000,
+        'pvc-aw': 150000,
+        ppr: 200000
+      };
+
+      const totalPipa = titik * hargaPipa[jenis];
+      const hargaToren = pakaiToren ? 1200000 : 0;
+      const hargaPompa = pakaiPompa ? 950000 : 0;
+      const total = totalPipa + hargaToren + hargaPompa;
+
+      const rincian = `
+        Estimasi Instalasi Air Bersih:<br>
+        <ul>
+          <li>${titik} Titik Air (${jenis}): Rp ${totalPipa.toLocaleString('id-ID')}</li>
+          ${pakaiToren ? `<li>Tandon Air: Rp ${hargaToren.toLocaleString('id-ID')}</li>` : ''}
+          ${pakaiPompa ? `<li>Pompa Air: Rp ${hargaPompa.toLocaleString('id-ID')}</li>` : ''}
+        </ul>
+        <strong>Total Estimasi: Rp ${total.toLocaleString('id-ID')}</strong>
+      `;
+      document.getElementById('output').innerHTML = rincian;
+
+      const pesan = `Halo, saya ingin konsultasi estimasi instalasi air bersih.%0ATitik Air: ${titik} (%0AJenis Pipa: ${jenis} = Rp ${totalPipa.toLocaleString('id-ID')})` +
+        (pakaiToren ? `%0ATandon Air: Rp ${hargaToren.toLocaleString('id-ID')}` : '') +
+        (pakaiPompa ? `%0APompa Air: Rp ${hargaPompa.toLocaleString('id-ID')}` : '') +
+        `%0ATotal estimasi: Rp ${total.toLocaleString('id-ID')}`;
+
+      document.getElementById('linkWa').href = `https://wa.me/6289660171013?text=${encodeURIComponent(pesan)}`;
+      document.getElementById('pesanWa').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
