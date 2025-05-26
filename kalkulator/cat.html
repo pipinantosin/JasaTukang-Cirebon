@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Estimasi Cat Dinding</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto', sans-serif; background: #f0f0f0; padding: 20px; }
+    .container { background: #fff; max-width: 800px; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #2c3e50; margin-bottom: 25px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; }
+    input, select { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+    button { background-color: #27ae60; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer; }
+    button:hover { background-color: #219150; }
+    .hasil { margin-top: 20px; font-weight: bold; font-size: 18px; }
+    .pesan-wa { margin-top: 20px; text-align: center; }
+    .pesan-wa a { background: #25d366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; }
+    .pesan-wa a:hover { background-color: #1ebe5d; }
+    .catatan { margin-top: 25px; font-size: 14px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kalkulator Estimasi Cat Dinding</h1>
+    <div class="form-group">
+      <label for="luasCat">Luas Permukaan Dinding (m²)</label>
+      <input type="number" id="luasCat" placeholder="Contoh: 120">
+    </div>
+    <div class="form-group">
+      <label for="tipeCat">Pilih Jenis Cat</label>
+      <select id="tipeCat">
+        <option value="eksterior">Cat Eksterior</option>
+        <option value="interior">Cat Interior</option>
+        <option value="antiBocor">Cat Anti Bocor</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label><input type="checkbox" id="primer" checked> Sertakan Cat Dasar (Primer)</label>
+      <label><input type="checkbox" id="plamir"> Sertakan Plamir / Dempul</label>
+    </div>
+    <button onclick="hitungCat()">Hitung Estimasi</button>
+    <div class="hasil" id="output"></div>
+    <div class="pesan-wa" id="pesanWa" style="display:none;">
+      <a id="linkWa" href="#" target="_blank">Kirim ke WhatsApp</a>
+    </div>
+    <div class="catatan">
+      *Harga estimasi per m²:<br>
+      - Cat Eksterior: Rp 25.000 | Interior: Rp 20.000 | Anti Bocor: Rp 35.000<br>
+      - Cat Dasar (Primer): Rp 8.000 | Plamir: Rp 7.000<br>
+      *Belum termasuk biaya tenaga pengecatan dan alat.
+    </div>
+  </div>
+
+  <script>
+    function hitungCat() {
+      const luas = parseFloat(document.getElementById('luasCat').value);
+      const tipe = document.getElementById('tipeCat').value;
+      const pakaiPrimer = document.getElementById('primer').checked;
+      const pakaiPlamir = document.getElementById('plamir').checked;
+
+      if (isNaN(luas) || luas <= 0) return alert("Masukkan luas cat yang valid.");
+
+      const hargaCat = {
+        eksterior: 25000,
+        interior: 20000,
+        antiBocor: 35000
+      };
+      const hargaPrimer = 8000;
+      const hargaPlamir = 7000;
+
+      const totalCat = luas * hargaCat[tipe];
+      const totalPrimer = pakaiPrimer ? luas * hargaPrimer : 0;
+      const totalPlamir = pakaiPlamir ? luas * hargaPlamir : 0;
+      const total = totalCat + totalPrimer + totalPlamir;
+
+      const rincian = `
+        Estimasi Cat Dinding:<br>
+        <ul>
+          <li>${luas} m² (${tipe}): Rp ${totalCat.toLocaleString('id-ID')}</li>
+          ${pakaiPrimer ? `<li>Cat Dasar: Rp ${totalPrimer.toLocaleString('id-ID')}</li>` : ''}
+          ${pakaiPlamir ? `<li>Plamir/Dempul: Rp ${totalPlamir.toLocaleString('id-ID')}</li>` : ''}
+        </ul>
+        <strong>Total Estimasi: Rp ${total.toLocaleString('id-ID')}</strong>
+      `;
+
+      document.getElementById('output').innerHTML = rincian;
+
+      const pesan = `Halo, saya ingin konsultasi estimasi pengecatan dinding.%0ALuas: ${luas} m²%0AJenis Cat: ${tipe} = Rp ${totalCat.toLocaleString('id-ID')}` +
+        (pakaiPrimer ? `%0ACat Dasar: Rp ${totalPrimer.toLocaleString('id-ID')}` : '') +
+        (pakaiPlamir ? `%0APlamir: Rp ${totalPlamir.toLocaleString('id-ID')}` : '') +
+        `%0ATotal estimasi: Rp ${total.toLocaleString('id-ID')}`;
+
+      document.getElementById('linkWa').href = `https://wa.me/6289660171013?text=${encodeURIComponent(pesan)}`;
+      document.getElementById('pesanWa').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
