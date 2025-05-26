@@ -130,5 +130,36 @@
   </div>
 </div>
 
+<!-- Tombol Kalkulator Biaya Material -->
+<div style="text-align:center; margin-top:50px;">
+  <button onclick="toggleKalkulator()" style="background-color:#27ae60; color:white; padding:12px 24px; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">
+    Kalkulator Biaya Material
+  </button>
+</div>
+
+<!-- Menu Kategori Kalkulator (Hidden by default) -->
+<div id="kalkulatorMenu" style="display:none; text-align:center; margin-top:20px;">
+  <p><strong>Pilih Kategori Material:</strong></p>
+  <ul style="list-style:none; padding:0;">
+    <li><a href="kalkulator/struktur.html">Struktur Bangunan</a></li>
+    <li><a href="kalkulator/dinding.html">Dinding & Plesteran</a></li>
+    <li><a href="kalkulator/lantai.html">Lantai & Keramik</a></li>
+    <li><a href="kalkulator/atap.html">Atap</a></li>
+    <li><a href="kalkulator/cat.html">Pengecatan</a></li>
+    <li><a href="kalkulator/kusen.html">Kusen, Pintu & Jendela</a></li>
+    <li><a href="kalkulator/plafon.html">Plafon</a></li>
+    <li><a href="kalkulator/listrik.html">Instalasi Listrik</a></li>
+    <li><a href="kalkulator/air.html">Instalasi Air (Ledeng)</a></li>
+    <li><a href="kalkulator/kayu.html">Kayu & Pertukangan</a></li>
+    <li><a href="kalkulator/furniture.html">Furniture & Interior</a></li>
+  </ul>
+</div>
+
+<script>
+  function toggleKalkulator() {
+    const menu = document.getElementById("kalkulatorMenu");
+    menu.style.display = (menu.style.display === "none") ? "block" : "none";
+  }
+</script>
 </body>
 </html>
