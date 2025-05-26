@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Estimasi Keramik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto', sans-serif; background: #f5f5f5; color: #333; padding: 20px; }
+    .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1 { text-align: center; margin-bottom: 25px; color: #2c3e50; }
+    .form-group { margin-bottom: 15px; }
+    label { font-weight: bold; display: block; margin-bottom: 5px; }
+    input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; }
+    button { background-color: #27ae60; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; }
+    button:hover { background-color: #1e8449; }
+    .hasil { margin-top: 20px; font-size: 18px; font-weight: bold; }
+    .pesan-wa { margin-top: 20px; text-align: center; }
+    .pesan-wa a { background: #25d366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; }
+    .pesan-wa a:hover { background-color: #1ebe5d; }
+    .catatan { margin-top: 25px; font-size: 14px; color: #777; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kalkulator Estimasi Biaya Keramik</h1>
+    <div class="form-group">
+      <label for="luasKeramik">Luas Area yang Akan Dipasang Keramik (m²)</label>
+      <input type="number" id="luasKeramik" placeholder="Contoh: 40">
+    </div>
+    <div class="form-group">
+      <label for="tipeKeramik">Pilih Tipe Keramik</label>
+      <select id="tipeKeramik">
+        <option value="biasa">Keramik Biasa (Rp 75.000/m²)</option>
+        <option value="granit">Keramik Granit (Rp 110.000/m²)</option>
+        <option value="premium">Keramik Premium (Rp 140.000/m²)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label><input type="checkbox" id="includeNat" checked> Sertakan Biaya Nat Keramik (Rp 5.000/m²)</label>
+    </div>
+    <button onclick="hitungKeramik()">Hitung Estimasi</button>
+    <div class="hasil" id="output"></div>
+    <div class="pesan-wa" id="pesanWa" style="display:none;">
+      <a id="linkWa" href="#" target="_blank">Kirim ke WhatsApp</a>
+    </div>
+    <div class="catatan">
+      *Estimasi berdasarkan harga pasaran keramik dan biaya tambahan nat (jika dicentang).<br>
+      *Belum termasuk jasa pemasangan dan material pendukung lain seperti semen instan, lem keramik, dan transport.
+    </div>
+  </div>
+
+  <script>
+    function hitungKeramik() {
+      const luas = parseFloat(document.getElementById('luasKeramik').value);
+      const tipe = document.getElementById('tipeKeramik').value;
+      const pakaiNat = document.getElementById('includeNat').checked;
+
+      if (isNaN(luas)) return alert("Masukkan luas area yang valid.");
+
+      const hargaPerM2 = {
+        biasa: 75000,
+        granit: 110000,
+        premium: 140000
+      };
+
+      const hargaNat = 5000;
+      const totalKeramik = luas * hargaPerM2[tipe];
+      const totalNat = pakaiNat ? luas * hargaNat : 0;
+      const total = totalKeramik + totalNat;
+
+      const rincian = [
+        `Keramik (${tipe}): Rp ${totalKeramik.toLocaleString('id-ID')}`,
+        ...(pakaiNat ? [`Biaya Nat: Rp ${totalNat.toLocaleString('id-ID')}`] : [])
+      ];
+
+      document.getElementById('output').innerHTML = `
+        Estimasi Biaya Keramik:<br>
+        <ul><li>${rincian.join('</li><li>')}</li></ul>
+        <strong>Total Estimasi: Rp ${total.toLocaleString('id-ID')}</strong>
+      `;
+
+      const pesan = `Halo, saya ingin konsultasi estimasi keramik.%0ALuas: ${luas} m²%0A${rincian.map(r => `- ${r}`).join('%0A')}%0ATotal estimasi: Rp ${total.toLocaleString('id-ID')}`;
+      document.getElementById('linkWa').href = `https://wa.me/6289660171013?text=${encodeURIComponent(pesan)}`;
+      document.getElementById('pesanWa').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
