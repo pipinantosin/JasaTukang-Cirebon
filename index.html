@@ -78,6 +78,38 @@
 <div class="container">
   <h2 style="text-align:center; color:#2c3e50;">Pilih Kategori Jasa</h2>
 
+  <!-- Kalkulator Borongan Diletakkan di Sini -->
+  <div style="background:#eafaf1; padding:15px 20px; text-align:center; border:1px solid #ccebdc; margin-bottom:30px;">
+    <p style="margin:0; font-size:16px;">
+      <strong>Ingin tahu estimasi biaya bangun atau renovasi tanpa repot beli bahan sendiri?</strong><br>
+      Coba <button onclick="toggleKalkulator()" style="background-color:#27ae60; color:white; border:none; padding:8px 16px; border-radius:4px; font-weight:bold; cursor:pointer;">Kalkulator Borongan</button>
+    </p>
+  </div>
+
+  <div id="kalkulatorMenu" style="display:none; text-align:center; padding:20px; background:#f9f9f9;">
+    <p><strong>Pilih kategori pekerjaan yang ingin dihitung:</strong></p>
+    <ul style="list-style:none; padding:0;">
+      <li><a href="kalkulator/bangun-rumah.html"><strong>Bangun Rumah dari Nol (Material Saja)</strong></a></li>
+      <li><a href="kalkulator/bangunan.html">Tukang Bangunan</a></li>
+      <li><a href="kalkulator/kayu.html">Tukang Kayu & Kusen</a></li>
+      <li><a href="kalkulator/atap.html">Rangka & Atap</a></li>
+      <li><a href="kalkulator/keramik.html">Keramik & Lantai</a></li>
+      <li><a href="kalkulator/plafon.html">Plafon</a></li>
+      <li><a href="kalkulator/listrik.html">Instalasi Listrik</a></li>
+      <li><a href="kalkulator/air.html">Pipa & Ledeng</a></li>
+      <li><a href="kalkulator/cat.html">Cat & Finishing</a></li>
+      <li><a href="kalkulator/interior.html">Interior & Furniture</a></li>
+    </ul>
+  </div>
+
+  <script>
+    function toggleKalkulator() {
+      const menu = document.getElementById("kalkulatorMenu");
+      menu.style.display = menu.style.display === "none" ? "block" : "none";
+      window.scrollTo({ top: menu.offsetTop - 100, behavior: 'smooth' });
+    }
+  </script>
+
   <div class="kategori-grid">
     <div class="kategori-card">
       <h3><a href="pages/bangunan.html">Tukang Bangunan</a></h3>
@@ -130,36 +162,5 @@
   </div>
 </div>
 
-<!-- Tombol Kalkulator Biaya Material -->
-<div style="text-align:center; margin-top:50px;">
-  <button onclick="toggleKalkulator()" style="background-color:#27ae60; color:white; padding:12px 24px; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">
-    Kalkulator Biaya Material
-  </button>
-</div>
-
-<!-- Menu Kategori Kalkulator (Hidden by default) -->
-<div id="kalkulatorMenu" style="display:none; text-align:center; margin-top:20px;">
-  <p><strong>Pilih Kategori Material:</strong></p>
-  <ul style="list-style:none; padding:0;">
-    <li><a href="kalkulator/struktur.html">Struktur Bangunan</a></li>
-    <li><a href="kalkulator/dinding.html">Dinding & Plesteran</a></li>
-    <li><a href="kalkulator/lantai.html">Lantai & Keramik</a></li>
-    <li><a href="kalkulator/atap.html">Atap</a></li>
-    <li><a href="kalkulator/cat.html">Pengecatan</a></li>
-    <li><a href="kalkulator/kusen.html">Kusen, Pintu & Jendela</a></li>
-    <li><a href="kalkulator/plafon.html">Plafon</a></li>
-    <li><a href="kalkulator/listrik.html">Instalasi Listrik</a></li>
-    <li><a href="kalkulator/air.html">Instalasi Air (Ledeng)</a></li>
-    <li><a href="kalkulator/kayu.html">Kayu & Pertukangan</a></li>
-    <li><a href="kalkulator/furniture.html">Furniture & Interior</a></li>
-  </ul>
-</div>
-
-<script>
-  function toggleKalkulator() {
-    const menu = document.getElementById("kalkulatorMenu");
-    menu.style.display = (menu.style.display === "none") ? "block" : "none";
-  }
-</script>
 </body>
 </html>
