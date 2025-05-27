@@ -7,6 +7,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #f7f7f7;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background-color: #f4f4f4;
+    }
+    header img {
+      height: 50px;
+    }
     .hero {
       background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), url('images/bg-tukang.jpg');
       background-size: cover;
@@ -21,7 +36,7 @@
     }
     .hero p {
       font-size: 18px;
-      margin-bottom: 30px;
+      margin-bottom: 15px;
     }
     .hero a {
       background-color: #27ae60;
@@ -33,6 +48,9 @@
     }
     .hero a:hover {
       background-color: #219150;
+    }
+    .container {
+      padding: 20px;
     }
     .kategori-grid {
       display: grid;
@@ -65,20 +83,25 @@
 <body>
 
 <header>
-  <h1>Jasa Tukang Ahmad Royani</h1>
-  <p>Cirebon dan Sekitarnya - Jasa Bangunan, Renovasi, Interior, & Lainnya</p>
+  <div style="display: flex; align-items: center;">
+    <img src="images/logo.png" alt="Logo Jasa Tukang">
+    <div style="margin-left: 15px;">
+      <h1 style="margin: 0; font-size: 22px;">Jasa Tukang Ahmad Royani</h1>
+      <p style="margin: 0; font-size: 14px;">Cirebon dan Sekitarnya</p>
+    </div>
+  </div>
 </header>
 
 <div class="hero">
   <h1>Tukang Bangunan Profesional</h1>
   <p>Dari renovasi kecil hingga proyek besar, kami siap membantu Anda dengan tenaga kerja berpengalaman dan terpercaya.</p>
+  <p style="font-style: italic; font-size: 16px;">Lebih dari 100+ proyek selesai memuaskan. Amanah. Profesional.</p>
   <a href="https://wa.me/6289660171013?text=Halo,%20saya%20ingin%20pesan%20jasa%20tukang">Pesan via WhatsApp</a>
 </div>
 
 <div class="container">
   <h2 style="text-align:center; color:#2c3e50;">Pilih Kategori Jasa</h2>
 
-  <!-- Kalkulator Borongan Diletakkan di Sini -->
   <div style="background:#eafaf1; padding:15px 20px; text-align:center; border:1px solid #ccebdc; margin-bottom:30px;">
     <p style="margin:0; font-size:16px;">
       <strong>Ingin tahu estimasi biaya bangun atau renovasi tanpa repot beli bahan sendiri?</strong><br>
