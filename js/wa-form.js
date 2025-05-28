@@ -7,9 +7,7 @@ function kirimWA() {
   localStorage.setItem('wa_alamat', alamat);
   localStorage.setItem('wa_pesan', pesan);
 
-  const teks = `Halo, saya *${nama}*.
-Alamat: ${alamat}.
-Saya ingin memesan jasa tukang:\n${pesan}`;
+  const teks = `Halo, saya *${nama}*.\nAlamat: ${alamat}.\nSaya ingin memesan jasa tukang:\n${pesan}`;
   const url = `https://wa.me/6289660171013?text=${encodeURIComponent(teks)}`;
 
   window.open(url, '_blank');
