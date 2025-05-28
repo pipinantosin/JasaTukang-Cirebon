@@ -73,7 +73,7 @@
 
 <header>
   <h1>Selamat Datang Di GriyaFix</h1>
-  <p>GriyaFix, solusi praktis untuk layanan tukang. Kami hubungkan Anda dengan tukang profesional, Ahmad Royani</p>
+  <p>GriyaFix, solusi praktis untuk layanan tukang. Kami hubungkan Anda dengan tukang profesional, Ahmad Royani.</p>
 </header>
 
 <div class="hero">
@@ -169,5 +169,16 @@
   </div>
 </div>
 
+<div id="loadForm"></div>
+<script>
+  fetch('/form-wa.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('loadForm').innerHTML = html;
+      const script = document.createElement('script');
+      script.src = '/js/wa-form.js';
+      document.body.appendChild(script);
+    });
+</script>
 </body>
 </html>
