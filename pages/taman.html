@@ -156,16 +156,16 @@ function order(id) {
   const makan = document.getElementById(`makan-${id}`).checked;
   const kenek = document.getElementById(`kenek-${id}`).checked;
   const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
-
   const tukangHarga = makan ? s.withMakan : s.base;
   const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
 
-  // Ambil dari form yang pernah diisi di halaman home
+  // ⬇️ Ambil data dari form di index.html (via localStorage)
   const nama = localStorage.getItem('wa_nama') || 'Pelanggan';
+  const alamat = localStorage.getItem('wa_alamat') || '';
   const catatan = localStorage.getItem('wa_pesan') || '';
 
-  // Format pesan
-  let msg = `Halo, saya *${nama}* ingin memesan jasa *${s.title}* dengan tarif *Rp${tukangHarga.toLocaleString()}${s.satuan}*`;
+  // ⬇️ Susun pesan WA
+  let msg = `Halo, saya *${nama}* dari *${alamat}* ingin memesan jasa *${s.title}* dengan tarif *Rp${tukangHarga.toLocaleString()}${s.satuan}*`;
 
   if (kenek && jumlah > 0) {
     const total = jumlah * kenekHarga;
@@ -173,7 +173,7 @@ function order(id) {
   }
 
   if (catatan) {
-    msg += `\n\nCatatan tambahan: ${catatan}`;
+    msg += `\n\nCatatan: ${catatan}`;
   }
 
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
