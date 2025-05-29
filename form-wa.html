@@ -7,3 +7,26 @@
     <button type="submit" style="background:#27ae60; color:white; padding:10px 20px; border:none; border-radius:4px;">Kirim via WhatsApp</button>
   </form>
 </div>
+
+<script>
+function kirimWA() {
+  const nama = document.getElementById("nama").value.trim();
+  const alamat = document.getElementById("alamat").value.trim();
+  const pesan = document.getElementById("pesan").value.trim();
+
+  if (!nama || !alamat || !pesan) {
+    alert("Harap isi semua field sebelum mengirim.");
+    return false;
+  }
+
+  // Simpan ke localStorage
+  localStorage.setItem("wa_nama", nama);
+  localStorage.setItem("wa_alamat", alamat);
+  localStorage.setItem("wa_pesan", pesan);
+
+  alert("Data tersimpan! Silakan lanjut ke halaman layanan untuk pesan tukang.");
+
+  // Tidak langsung buka WhatsApp agar bisa dipakai di semua halaman
+  return false; // Mencegah reload
+}
+</script>
