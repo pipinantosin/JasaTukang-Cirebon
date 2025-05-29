@@ -151,22 +151,29 @@ tamanServices.forEach((s, i) => {
 
 function order(id) {
   const s = tamanServices[id];
-  const phone = '6289660171013'; // no WhatsApp tujuan
-  const nama = localStorage.getItem('wa_nama') || 'Pelanggan';
-  const pesan = localStorage.getItem('wa_pesan') || '';
+  const phone = '6289660171013';
+
   const makan = document.getElementById(`makan-${id}`).checked;
   const kenek = document.getElementById(`kenek-${id}`).checked;
   const jumlah = parseInt(document.getElementById(`jumlah-${id}`).value);
+
   const tukangHarga = makan ? s.withMakan : s.base;
   const kenekHarga = makan ? s.kenekMakan : s.kenekBase;
 
-  let msg = `Halo, saya ${nama} ingin pesan jasa ${s.title} dengan tarif Rp${tukangHarga.toLocaleString()}${s.satuan}`;
+  // Ambil dari form yang pernah diisi di halaman home
+  const nama = localStorage.getItem('wa_nama') || 'Pelanggan';
+  const catatan = localStorage.getItem('wa_pesan') || '';
+
+  // Format pesan
+  let msg = `Halo, saya *${nama}* ingin memesan jasa *${s.title}* dengan tarif *Rp${tukangHarga.toLocaleString()}${s.satuan}*`;
+
   if (kenek && jumlah > 0) {
     const total = jumlah * kenekHarga;
-    msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: Rp${total.toLocaleString()}`;
+    msg += `\n+ Tambahan Kenek ${jumlah} orang. Estimasi biaya: *Rp${total.toLocaleString()}*`;
   }
-  if (pesan) {
-    msg += `\n\nCatatan: ${pesan}`;
+
+  if (catatan) {
+    msg += `\n\nCatatan tambahan: ${catatan}`;
   }
 
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
