@@ -169,5 +169,14 @@
   </div>
 </div>
 
+<hr>
+<section id="waFormContainer" style="margin: 40px 20px;"></section>
+<script>
+  fetch('form-wa.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('waFormContainer').innerHTML = html;
+    });
+</script>
 </body>
 </html>
