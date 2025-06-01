@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Halaman Utama -->
+  <url>
+    <loc>https://pipinantosin.github.io/JasaTukang-Cirebon/</loc>
+    <lastmod>2025-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Halaman Jasa (pages/) -->
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/ac.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/aluminium.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/atap.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/bangunan.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/cat.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/interior.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/kayu.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/las.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/ledeng.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/listrik.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/renovasi.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/pages/taman.html</loc></url>
+
+  <!-- Halaman Kalkulator -->
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/kalkulator/air.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/kalkulator/atap.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/kalkulator/bangun-rumah.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/kalkulator/bangunan.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/kalkulator/cat.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/kalkulator/interior.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/kalkulator/kayu.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/kalkulator/keramik.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/kalkulator/listrik.html</loc></url>
+  <url><loc>https://pipinantosin.github.io/JasaTukang-Cirebon/kalkulator/plafon.html</loc></url>
+</urlset>
